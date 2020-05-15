@@ -43,7 +43,7 @@ For image classification problem `datum` expects input data in the following for
       * csv_path: labels filename, default name is `<split>.csv`
 
 #### create a config file 
-a sample config file [image_clf_configs.py](https://github.com/n3011/datum/blob/master/configs/image_clf_configs.py) is
+a sample config file [image_clf_configs.py](https://github.com/openagi/datum/blob/master/configs/image_clf_configs.py) is
 provided with datum.
 
 This config file can be modified as per your requirements. If you want to use different folder name for a split or a
@@ -92,7 +92,7 @@ For image object detection problem data to be stored in the Pascal VOC data form
     * annotation_dir: directory name where xml annotation files are stored.
 
 #### create a config file 
-a sample config file [image_det_configs.py](https://github.com/n3011/datum/blob/master/configs/image_det_configs.py) is
+a sample config file [image_det_configs.py](https://github.com/openagi/datum/blob/master/configs/image_det_configs.py) is
 provided with datum.
 
 This config file can be modified as per your requirements. If you want to use different folder name for image dir or a
@@ -150,7 +150,7 @@ For each single image there should be a single segmentation map image with class
     * label_extension: extension of the label images.
 
 #### create a config file 
-a sample config file [image_seg_configs.py](https://github.com/n3011/datum/blob/master/configs/image_seg_configs.py) is
+a sample config file [image_seg_configs.py](https://github.com/openagi/datum/blob/master/configs/image_seg_configs.py) is
 provided with datum.
 
 ```Python
@@ -191,7 +191,7 @@ To create tfreord for text classification or generative modeling data should be 
       parent `self.path`.
 
 #### create a config file 
-a sample config file [text_json_configs.py](https://github.com/n3011/datum/blob/master/configs/text_json_configs.py) is
+a sample config file [text_json_configs.py](https://github.com/openagi/datum/blob/master/configs/text_json_configs.py) is
 provided with datum.
 
 ```Python
