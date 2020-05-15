@@ -1,0 +1,17 @@
+# core lib dep
+tensorflow==2.2.0rc3
+opencv-python==4.2.0.32
+absl-py==0.8.1
+tqdm==4.39.0
+
+# testing dep
+pytest==5.2.4
+pytest-xdist==1.30.0
+
+# sanity dep
+yapf==0.26.0
+docformatter==1.1
+isort==4.3.21
+mypy==0.770
+pylint==2.4.4
+pycodestyle==2.4.0
