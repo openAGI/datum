@@ -1,5 +1,8 @@
 # datum
 
+<a href="https://github.com/openagi/datum/actions?query=workflow%3Adatum_py37"><img alt="Datum Build Status" src="https://github.com/openagi/datum/workflows/datum_py37/badge.svg"></a>
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 Datum provides APIs to create tfrecord daatsets and read tfrecord as `tf.data.Datasets`
 
 ## Introduction
