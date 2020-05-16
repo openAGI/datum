@@ -17,7 +17,7 @@ The purpose of this library to make it easier for end-user to create and read tf
 
 #### Using pip
 ```Shell
-pip install datum
+pip install https://github.com/openAGI/datum/archive/release/r1.0.zip
 ```
 
 #### For development
