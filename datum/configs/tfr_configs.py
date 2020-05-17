@@ -154,6 +154,12 @@ class DatasetConfigs(ConfigBase):
       docstring='Batch size for test data.',
       default_factory=lambda: 32,
   )
+  echoing = create_config(
+      name='echoing',
+      ty=int,
+      docstring='Batch echoing factor, if not None, echoes batches.',
+      default_factory=lambda: None,
+  )
   shuffle_files = create_config(
       name='shuffle_files',
       ty=bool,
