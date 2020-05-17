@@ -69,3 +69,21 @@ class TestDataset(absltest.TestCase):
     ds = self._dataset.train_fn('train', False)
     batch = next(iter(ds))
     self.assertEqual(batch['image'].shape, [2, 224, 224, 3])
+
+  def test_echoing(self):
+
+    def resize_image(example):
+      example['image'] = tf.image.resize(example['image'], [224, 224])
+      return example
+
+    dataset_configs = self._dataset.dataset_configs
+    dataset_configs.post_batching_callback_train = resize_image
+    dataset_configs.batch_size_train = 2
+    dataset_configs.echoing = 2
+    ds = iter(self._dataset.train_fn('train', False))
+    batch_1 = next(ds)
+    self.assertEqual(batch_1['image'].shape, [2, 224, 224, 3])
+    batch_2 = next(ds)
+    self.assertEqual(batch_2['image'].shape, [2, 224, 224, 3])
+    with self.assertRaises(StopIteration):
+      next(ds)
