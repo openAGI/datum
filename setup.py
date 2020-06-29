@@ -27,8 +27,8 @@ with open('requirements.txt', 'r') as f:
         ignore += 1
         if ignore > 1:
           break
-    else:
-      REQUIRED_PKGS.append(tentative_req.strip())
+      else:
+        REQUIRED_PKGS.append(tentative_req.strip())
 
 TESTS_REQUIRE = [
     'pytest',
@@ -50,11 +50,9 @@ setup(
     install_requires=REQUIRED_PKGS,
     tests_require=TESTS_REQUIRE,
     classifiers=[
-        'Development Status :: 1 - Beta',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: Apache Software License',
-        'Topic :: Scientific/Engineering :: Artificial Intelligence:: Dataset',
     ],
     keywords='datum tensorflow tf.data datasets tfrecord',
 )
