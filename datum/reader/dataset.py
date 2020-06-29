@@ -54,6 +54,7 @@ class Dataset():
             repeat: Optional[int] = None,
             bucket_fn: Optional[Callable[[tf.train.Example], int]] = None,
             shuffle: bool = False,
+            echoing: Optional[int] = None,
             full_dataset: bool = False,
             pre_batching_callback: Optional[Callable[[Dict], Dict]] = None,
             post_batching_callback: Optional[Callable[[Dict], Dict]] = None) -> DatasetType:
@@ -67,6 +68,7 @@ class Dataset():
       bucket_fn: element length computation fn for bucketing, for sporse inputs data can be
        batched based on element length.
       shuffle: whether to shuffle examples in the dataset.
+      echoing: batch echoing factor, if not None perform batch_echoing.
       full_dataset: if true, return the dataset as a single batch for dataset with single element.
       pre_batching_callback: data processing to apply before batching.
       post_batching_callback: data processing to apply post batching. This fucntion should support
@@ -101,6 +103,9 @@ class Dataset():
       dataset = dataset.apply(bucket_op)
     elif batch_size:
       dataset = dataset.padded_batch(batch_size, padded_shapes=self.padded_shapes)
+    if echoing:
+      dataset = dataset.flat_map(lambda example: tf.data.Dataset.from_tensors(example).repeat(echoing
+                                                                                              ))
     if repeat:
       logging.info(f'Dataset repeat is enabled for: {repeat} times.')
       dataset = dataset.repeat(count=repeat)
@@ -144,6 +149,7 @@ class Dataset():
         repeat=repeat,
         bucket_fn=self._dataset_configs.bucket_fn,
         shuffle=shuffle,
+        echoing=self._dataset_configs.echoing,
         full_dataset=self._dataset_configs.full_dataset,
         pre_batching_callback=self._dataset_configs.pre_batching_callback_train,
         post_batching_callback=self._dataset_configs.post_batching_callback_train)
@@ -166,6 +172,7 @@ class Dataset():
         repeat=repeat,
         bucket_fn=self._dataset_configs.bucket_fn,
         shuffle=shuffle,
+        echoing=None,
         full_dataset=self._dataset_configs.full_dataset,
         pre_batching_callback=self._dataset_configs.pre_batching_callback_val,
         post_batching_callback=self._dataset_configs.post_batching_callback_val)
@@ -188,6 +195,7 @@ class Dataset():
         repeat=repeat,
         bucket_fn=self._dataset_configs.bucket_fn,
         shuffle=shuffle,
+        echoing=None,
         full_dataset=self._dataset_configs.full_dataset,
         pre_batching_callback=self._dataset_configs.pre_batching_callback_test,
         post_batching_callback=self._dataset_configs.post_batching_callback_test)
