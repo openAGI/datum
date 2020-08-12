@@ -1,7 +1,7 @@
 # datum
 
 <a href="https://github.com/openagi/datum/actions?query=workflow%3Adatum_py37"><img alt="Datum Build Status" src="https://github.com/openagi/datum/workflows/datum_py37/badge.svg"></a>
-[![TensorFlow 2.2](https://img.shields.io/badge/TensorFlow-2.2-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.2.0)
+[![TensorFlow 2.3](https://img.shields.io/badge/TensorFlow-2.3-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.3.0)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Datum provides APIs to create tfrecord daatsets and read tfrecord as `tf.data.Datasets`
