@@ -39,8 +39,10 @@ packages = find_namespace_packages(exclude=["tests*", "tools*"],)
 setup(
     name=project_name,
     version=__version__,
-    description="Datum provides APIs to create tfrecord daatsets and read tfrecord as tf.data.Datasets",
-    long_description="Datum provides APIs to create tfrecord daatsets and read tfrecord as tf.data.Datasets",
+    description=
+    "Datum provides APIs to create tfrecord daatsets and read tfrecord as tf.data.Datasets",
+    long_description=
+    "Datum provides APIs to create tfrecord daatsets and read tfrecord as tf.data.Datasets",
     author='OpenAGI',
     author_email='maintainer@openagi.io',
     url='https://github.com/openagi/datum',
