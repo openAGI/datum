@@ -6,7 +6,7 @@ Usage outside of TensorFlow is also supported. See the README on GitHub for furt
 import os
 import sys
 
-from setuptools import find_packages, setup
+from setuptools import find_namespace_packages, setup
 
 project_name = 'datum'
 
@@ -34,19 +34,21 @@ TESTS_REQUIRE = [
     'pytest',
     'pytest-xdist',
 ]
+packages = find_namespace_packages(exclude=["tests*", "tools*"],)
 
 setup(
     name=project_name,
     version=__version__,
-    description=_LONG_DESCRIPTION[0],
-    long_description=_LONG_DESCRIPTION,
+    description="Datum provides APIs to create tfrecord daatsets and read tfrecord as tf.data.Datasets",
+    long_description="Datum provides APIs to create tfrecord daatsets and read tfrecord as tf.data.Datasets",
     author='OpenAGI',
     author_email='maintainer@openagi.io',
     url='https://github.com/openagi/datum',
     download_url='https://github.com/openagi/datum/tags',
     license='Apache 2.0',
-    packages=find_packages(),
+    packages=packages,
     scripts=[],
+    include_package_data=True,
     install_requires=REQUIRED_PKGS,
     tests_require=TESTS_REQUIRE,
     classifiers=[
