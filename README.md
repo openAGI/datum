@@ -61,6 +61,29 @@ config = {
 cnf = AttrDict(config)
 ```
 
+### Create tfrecord dataset using export api
+```Python
+from datum.configs import TFRWriteConfigs
+from datum.export.export import export_to_tfrecord
+from datum.problem import types
+
+# set path to your input data
+input_path = "tests/dummy_data/cl"
+# set path to output data
+output_path = "output_tfrecord"
+
+write_configs = TFRWriteConfigs()
+write_configs.splits = {
+    "train": {
+        "num_examples": 2
+    },
+    "val": {
+        "num_examples": 2
+    },
+}
+export_to_tfrecord(input_path, output_path, types.IMAGE_CLF, write_configs)
+```
+
 
 ### Load tfrecord dataset as tf.data.Dataset
 Datset can be loaded as tf.data.Dataset as follows
