@@ -31,7 +31,7 @@ def load(path: str, dataset_configs: Optional[ConfigBase] = None) -> DatasetType
       the output tf.data.Dataset. This is designed to give an extensive control of
       the dataset pre and post processsing operation to the end-user.
 
-    dataset_confugs has the following configurable attributes.
+    dataset_configs has the following configurable attributes.
       buffer_size: Representing the number of elements from this dataset from which the
            new dataset will sample, default: 100.
       seed: Random seed for tfrecord files based randomness, default: 6052020.

@@ -1,4 +1,4 @@
-# Copyright 2020 The OpenAGI Datum Authors.
+# Copyright 2021 The OpenAGI Datum Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,5 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Datum default problem types."""
 
-__version__ = '1.1.0'
+IMAGE_CLF = "image_clf"
+IMAGE_DET = "image_det"
+IMAGE_SEG = "image_seg"
+TEXT_CLF = "text_clf"
