@@ -28,11 +28,19 @@ class TFRWriteConfigs(ConfigBase):
   """
   generator = create_config(
       name='generator',
-      ty=Callable,
-      docstring='Generator class instance, ti should have a __call__ method.')
+      ty=object,
+      docstring='Generator class instance, it should have a __call__ method.')
+  serializer = create_config(
+      name='serializer',
+      ty=object,
+      docstring='Serializer class instance, it should have a __call__ method.')
   sparse_features = create_config(
       name='sparse_features', ty=list, docstring='A list of sparse features name in the dataset.')
-  splits = create_config(name='splits', ty=list, docstring='A list of split names in the dataset.')
+  splits = create_config(
+      name='splits',
+      ty=dict,
+      docstring='A dict of split names as keys and \
+      split attributes as values in the dataset.')
   num_train_examples = create_config(
       name='num_train_examples', ty=int, docstring='Num of train examples in the dataset.')
   num_val_examples = create_config(
