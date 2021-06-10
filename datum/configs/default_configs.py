@@ -39,9 +39,8 @@ def get_default_write_configs(problem_type: str,
   Raises:
     ValueError: If label_names_file is not valid, raised only for `IMAGE_DET` problem.
   """
-  serializer = DatumSerializer(
-      problem.PROBLEM_PARAMS[problem_type]["serializer"],
-      datum_name_to_encoder_fn=datum_name_to_encoder)
+  serializer = DatumSerializer(problem.PROBLEM_PARAMS[problem_type]["serializer"],
+                               datum_name_to_encoder_fn=datum_name_to_encoder)
   if problem_type == problem.IMAGE_DET:
     if not label_names_file:
       raise ValueError("label_names_file must be provided for `IMAGE_DET` problem.")

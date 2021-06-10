@@ -38,14 +38,13 @@ def main(_: Any) -> None:
   Path(FLAGS.output_path).mkdir(parents=True, exist_ok=True)
   for split in splits:
     logging.info(f'Creating tfrecord writer for split: {split}.')
-    tfr_writer = TFRecordWriter(
-        generator,
-        config.serializer,
-        FLAGS.output_path,
-        split,
-        config.num_examples.get(split),
-        sparse_features=config.sparse_features,
-        **config.gen_kwargs)
+    tfr_writer = TFRecordWriter(generator,
+                                config.serializer,
+                                FLAGS.output_path,
+                                split,
+                                config.num_examples.get(split),
+                                sparse_features=config.sparse_features,
+                                **config.gen_kwargs)
     logging.info('Starting conversion process.')
     tfr_writer.create_records()
     logging.info(f'Completed tfrecord conversion for input split: {split}')

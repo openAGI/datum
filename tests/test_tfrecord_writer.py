@@ -29,8 +29,9 @@ class_map = {
     for idx, name in enumerate(
         open(os.path.join('tests/dummy_data/det/voc/voc2012.names')).read().splitlines())
 }
-DET_GEN = image.DetDatumGenerator(
-    'tests/dummy_data/det/voc', gen_config=AttrDict(has_test_annotations=True, class_map=class_map))
+DET_GEN = image.DetDatumGenerator('tests/dummy_data/det/voc',
+                                  gen_config=AttrDict(has_test_annotations=True,
+                                                      class_map=class_map))
 SEG_GEN = image.SegDatumGenerator('tests/dummy_data/seg/voc')
 
 

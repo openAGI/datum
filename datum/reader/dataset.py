@@ -104,8 +104,8 @@ class Dataset():
     elif batch_size:
       dataset = dataset.padded_batch(batch_size, padded_shapes=self.padded_shapes)
     if echoing:
-      dataset = dataset.flat_map(lambda example: tf.data.Dataset.from_tensors(example).repeat(echoing
-                                                                                              ))
+      dataset = dataset.flat_map(
+          lambda example: tf.data.Dataset.from_tensors(example).repeat(echoing))
     if repeat:
       logging.info(f'Dataset repeat is enabled for: {repeat} times.')
       dataset = dataset.repeat(count=repeat)
@@ -131,7 +131,9 @@ class Dataset():
         padded_shapes[key] = []
     return padded_shapes
 
-  def train_fn(self, instruction: str = 'train', repeat: Optional[int] = None,
+  def train_fn(self,
+               instruction: str = 'train',
+               repeat: Optional[int] = None,
                shuffle: bool = True) -> DatasetType:
     """Get training dataset.
 
@@ -143,18 +145,19 @@ class Dataset():
     Returns:
       a tf.data.Dataset object.
     """
-    return self._read(
-        instruction,
-        batch_size=self._dataset_configs.batch_size_train,
-        repeat=repeat,
-        bucket_fn=self._dataset_configs.bucket_fn,
-        shuffle=shuffle,
-        echoing=self._dataset_configs.echoing,
-        full_dataset=self._dataset_configs.full_dataset,
-        pre_batching_callback=self._dataset_configs.pre_batching_callback_train,
-        post_batching_callback=self._dataset_configs.post_batching_callback_train)
+    return self._read(instruction,
+                      batch_size=self._dataset_configs.batch_size_train,
+                      repeat=repeat,
+                      bucket_fn=self._dataset_configs.bucket_fn,
+                      shuffle=shuffle,
+                      echoing=self._dataset_configs.echoing,
+                      full_dataset=self._dataset_configs.full_dataset,
+                      pre_batching_callback=self._dataset_configs.pre_batching_callback_train,
+                      post_batching_callback=self._dataset_configs.post_batching_callback_train)
 
-  def val_fn(self, instruction: str = 'val', repeat: Optional[int] = None,
+  def val_fn(self,
+             instruction: str = 'val',
+             repeat: Optional[int] = None,
              shuffle: bool = False) -> DatasetType:
     """Get validation dataset.
 
@@ -166,18 +169,19 @@ class Dataset():
     Returns:
       a tf.data.Dataset object.
     """
-    return self._read(
-        instruction,
-        batch_size=self._dataset_configs.batch_size_val,
-        repeat=repeat,
-        bucket_fn=self._dataset_configs.bucket_fn,
-        shuffle=shuffle,
-        echoing=None,
-        full_dataset=self._dataset_configs.full_dataset,
-        pre_batching_callback=self._dataset_configs.pre_batching_callback_val,
-        post_batching_callback=self._dataset_configs.post_batching_callback_val)
+    return self._read(instruction,
+                      batch_size=self._dataset_configs.batch_size_val,
+                      repeat=repeat,
+                      bucket_fn=self._dataset_configs.bucket_fn,
+                      shuffle=shuffle,
+                      echoing=None,
+                      full_dataset=self._dataset_configs.full_dataset,
+                      pre_batching_callback=self._dataset_configs.pre_batching_callback_val,
+                      post_batching_callback=self._dataset_configs.post_batching_callback_val)
 
-  def test_fn(self, instruction: str = 'test', repeat: int = 1,
+  def test_fn(self,
+              instruction: str = 'test',
+              repeat: int = 1,
               shuffle: bool = False) -> DatasetType:
     """Get test dataset.
 
@@ -189,13 +193,12 @@ class Dataset():
     Returns:
       a tf.data.Dataset object.
     """
-    return self._read(
-        instruction,
-        batch_size=self._dataset_configs.batch_size_test,
-        repeat=repeat,
-        bucket_fn=self._dataset_configs.bucket_fn,
-        shuffle=shuffle,
-        echoing=None,
-        full_dataset=self._dataset_configs.full_dataset,
-        pre_batching_callback=self._dataset_configs.pre_batching_callback_test,
-        post_batching_callback=self._dataset_configs.post_batching_callback_test)
+    return self._read(instruction,
+                      batch_size=self._dataset_configs.batch_size_test,
+                      repeat=repeat,
+                      bucket_fn=self._dataset_configs.bucket_fn,
+                      shuffle=shuffle,
+                      echoing=None,
+                      full_dataset=self._dataset_configs.full_dataset,
+                      pre_batching_callback=self._dataset_configs.pre_batching_callback_test,
+                      post_batching_callback=self._dataset_configs.post_batching_callback_test)

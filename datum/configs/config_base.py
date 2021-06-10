@@ -79,8 +79,8 @@ def create_config(name: str,
 
   def set_fn(config: ConfigBase, value: Any) -> None:
     if not isinstance(value, ty):
-      raise TypeError(
-          "Property \"%s\" must be of type %s, got: %r (type: %r)" % (name, ty, value, type(value)))
+      raise TypeError("Property \"%s\" must be of type %s, got: %r (type: %r)" %
+                      (name, ty, value, type(value)))
     # pylint: disable=protected-access
     config._configs[name] = value # type: ignore
 
@@ -133,6 +133,6 @@ def merge_configs(*configs_list: ConfigBase) -> ConfigBase:
       elif isinstance(this, ConfigBase):
         setattr(result, name, merge_configs(this, that))
       elif this != that:
-        raise ValueError(
-            "Cannot merge incompatible values (%r and %r) of config: %s" % (this, that, name))
+        raise ValueError("Cannot merge incompatible values (%r and %r) of config: %s" %
+                         (this, that, name))
   return result

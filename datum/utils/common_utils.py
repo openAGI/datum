@@ -119,8 +119,8 @@ class AttrDict(dict):
       if isinstance(value, type(self)):
         base[key] = value.to_dict()
       elif isinstance(value, (list, tuple)):
-        base[key] = type(value)(
-            item.to_dict() if isinstance(item, type(self)) else item for item in value)
+        base[key] = type(value)(item.to_dict() if isinstance(item, type(self)) else item
+                                for item in value)
       else:
         base[key] = value
     return base
@@ -316,7 +316,8 @@ class memoized_property(property): # pylint: disable=invalid-name
     return cached
 
 
-def deserialize_object(identifier: Any, module_objects: Dict,
+def deserialize_object(identifier: Any,
+                       module_objects: Dict,
                        printable_module_name: str = 'object') -> object:
   """Deserialize object using name.
 

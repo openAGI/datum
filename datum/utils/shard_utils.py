@@ -66,8 +66,11 @@ def get_shard_specs(num_examples: int, total_size: int, bucket_lengths: Sequence
   bucket_indexes = list(range(len(bucket_lengths)))
   from_ = 0
   for shard_index, to in enumerate(shard_boundaries):
-    instructions = get_read_instructions(
-        from_, to, bucket_indexes, bucket_lengths, shardref_name="bucket_index")
+    instructions = get_read_instructions(from_,
+                                         to,
+                                         bucket_indexes,
+                                         bucket_lengths,
+                                         shardref_name="bucket_index")
     shard_specs.append(
         _ShardSpec(
             shard_index=shard_index,

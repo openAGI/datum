@@ -42,18 +42,28 @@ def _test_create_det_records(path):
   }
   serializer = DatumSerializer('image')
   Path(path).mkdir(parents=True, exist_ok=True)
-  det_gen = image.DetDatumGenerator(
-      'tests/dummy_data/det/voc',
-      gen_config=AttrDict(has_test_annotations=True, class_map=class_map))
+  det_gen = image.DetDatumGenerator('tests/dummy_data/det/voc',
+                                    gen_config=AttrDict(has_test_annotations=True,
+                                                        class_map=class_map))
   gen_kwargs = {'image_set': 'ImageSets'}
   sparse_features = [
       'xmin', 'xmax', 'ymin', 'ymax', 'labels', 'pose', 'is_truncated', 'labels_difficult'
   ]
-  writer = TFRecordWriter(
-      det_gen, serializer, path, 'train', 2, sparse_features=sparse_features, **gen_kwargs)
+  writer = TFRecordWriter(det_gen,
+                          serializer,
+                          path,
+                          'train',
+                          2,
+                          sparse_features=sparse_features,
+                          **gen_kwargs)
   writer.create_records()
-  writer = TFRecordWriter(
-      det_gen, serializer, path, 'val', 1, sparse_features=sparse_features, **gen_kwargs)
+  writer = TFRecordWriter(det_gen,
+                          serializer,
+                          path,
+                          'val',
+                          1,
+                          sparse_features=sparse_features,
+                          **gen_kwargs)
   writer.create_records()
 
 

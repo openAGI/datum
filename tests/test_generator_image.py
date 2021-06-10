@@ -26,33 +26,33 @@ class TestClfDatumGenerator(absltest.TestCase):
 
   def test_train_generator(self):
     for key, datum in self.clf_gen(split='train'):
-      self.assertEqual(
-          list(datum.keys()), ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
-      self.assertEqual(
-          list(datum.values()), ['tests/dummy_data/clf/train/image_232.jpg', 1, 2, 1, 0])
+      self.assertEqual(list(datum.keys()),
+                       ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
+      self.assertEqual(list(datum.values()),
+                       ['tests/dummy_data/clf/train/image_232.jpg', 1, 2, 1, 0])
     for key, datum in self.clf_gen(split='train', extension='.jpg'):
-      self.assertEqual(
-          list(datum.keys()), ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
-      self.assertEqual(
-          list(datum.values()), ['tests/dummy_data/clf/train/image_232.jpg', 1, 2, 1, 0])
+      self.assertEqual(list(datum.keys()),
+                       ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
+      self.assertEqual(list(datum.values()),
+                       ['tests/dummy_data/clf/train/image_232.jpg', 1, 2, 1, 0])
     for key, datum in self.clf_gen(split='train', extension='.jpg', csv_path='train.csv'):
-      self.assertEqual(
-          list(datum.keys()), ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
-      self.assertEqual(
-          list(datum.values()), ['tests/dummy_data/clf/train/image_232.jpg', 1, 2, 1, 0])
+      self.assertEqual(list(datum.keys()),
+                       ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
+      self.assertEqual(list(datum.values()),
+                       ['tests/dummy_data/clf/train/image_232.jpg', 1, 2, 1, 0])
 
   def test_val_generator(self):
     for key, datum in self.clf_gen(split='val'):
-      self.assertEqual(
-          list(datum.keys()), ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
+      self.assertEqual(list(datum.keys()),
+                       ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
       self.assertEqual(list(datum.values()), ['tests/dummy_data/clf/val/image_232.jpg', 1, 2, 1, 0])
     for key, datum in self.clf_gen(split='val', extension='.jpg'):
-      self.assertEqual(
-          list(datum.keys()), ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
+      self.assertEqual(list(datum.keys()),
+                       ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
       self.assertEqual(list(datum.values()), ['tests/dummy_data/clf/val/image_232.jpg', 1, 2, 1, 0])
     for key, datum in self.clf_gen(split='val', extension='.jpg', csv_path='val.csv'):
-      self.assertEqual(
-          list(datum.keys()), ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
+      self.assertEqual(list(datum.keys()),
+                       ['image', 'label_test1', 'label_test2', 'label_test3', 'label_test4'])
       self.assertEqual(list(datum.values()), ['tests/dummy_data/clf/val/image_232.jpg', 1, 2, 1, 0])
 
 
@@ -64,9 +64,9 @@ class TestDetDatumGenerator(absltest.TestCase):
         for idx, name in enumerate(
             open(os.path.join('tests/dummy_data/det/voc/voc2012.names')).read().splitlines())
     }
-    self.det_gen = image.DetDatumGenerator(
-        'tests/dummy_data/det/voc',
-        gen_config=AttrDict(has_test_annotations=True, class_map=class_map))
+    self.det_gen = image.DetDatumGenerator('tests/dummy_data/det/voc',
+                                           gen_config=AttrDict(has_test_annotations=True,
+                                                               class_map=class_map))
 
   def test_train_generator(self):
     values = {
@@ -84,19 +84,19 @@ class TestDetDatumGenerator(absltest.TestCase):
         ],
     }
     for key, datum in self.det_gen(split='train', set_dir='ImageSets'):
-      self.assertEqual(
-          list(datum.keys()), [
-              'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
-              'labels_difficult'
-          ])
+      self.assertEqual(list(datum.keys()), [
+          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
+          'labels_difficult'
+      ])
       self.assertEqual(list(datum.values()), values[key])
-    for key, datum in self.det_gen(
-        split='train', set_dir='ImageSets', image_dir='JPEGImages', annotation_dir='Annotations'):
-      self.assertEqual(
-          list(datum.keys()), [
-              'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
-              'labels_difficult'
-          ])
+    for key, datum in self.det_gen(split='train',
+                                   set_dir='ImageSets',
+                                   image_dir='JPEGImages',
+                                   annotation_dir='Annotations'):
+      self.assertEqual(list(datum.keys()), [
+          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
+          'labels_difficult'
+      ])
       self.assertEqual(list(datum.values()), values[key])
 
   def test_val_generator(self):
@@ -107,19 +107,19 @@ class TestDetDatumGenerator(absltest.TestCase):
         ],
     }
     for key, datum in self.det_gen(split='val', set_dir='ImageSets'):
-      self.assertEqual(
-          list(datum.keys()), [
-              'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
-              'labels_difficult'
-          ])
+      self.assertEqual(list(datum.keys()), [
+          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
+          'labels_difficult'
+      ])
       self.assertEqual(list(datum.values()), values[key])
-    for key, datum in self.det_gen(
-        split='val', set_dir='ImageSets', image_dir='JPEGImages', annotation_dir='Annotations'):
-      self.assertEqual(
-          list(datum.keys()), [
-              'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
-              'labels_difficult'
-          ])
+    for key, datum in self.det_gen(split='val',
+                                   set_dir='ImageSets',
+                                   image_dir='JPEGImages',
+                                   annotation_dir='Annotations'):
+      self.assertEqual(list(datum.keys()), [
+          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
+          'labels_difficult'
+      ])
       self.assertEqual(list(datum.values()), values[key])
 
 

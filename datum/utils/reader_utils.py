@@ -62,8 +62,8 @@ def _pct_to_abs_closest(boundary: int, num_examples: int) -> int:
   return int(round(boundary * num_examples / 100.))
 
 
-def _rel_to_abs_instr(rel_instr: _RelativeInstruction,
-                      name2len: Dict[str, int]) -> _AbsoluteInstruction:
+def _rel_to_abs_instr(rel_instr: _RelativeInstruction, name2len: Dict[str,
+                                                                      int]) -> _AbsoluteInstruction:
   """Returns _AbsoluteInstruction instance for given RelativeInstruction.
 
   Args:
