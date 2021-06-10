@@ -17,10 +17,14 @@ from datum.configs import config_base
 
 
 class _TestConfig(config_base.ConfigBase):
-  x = config_base.create_config(
-      name="x", ty=int, docstring="the answer to everything", default_factory=lambda: 42)
-  y = config_base.create_config(
-      name="y", ty=float, docstring="a tasty pie", default_factory=lambda: 3.14)
+  x = config_base.create_config(name="x",
+                                ty=int,
+                                docstring="the answer to everything",
+                                default_factory=lambda: 42)
+  y = config_base.create_config(name="y",
+                                ty=float,
+                                docstring="a tasty pie",
+                                default_factory=lambda: 3.14)
 
 
 class _NestedTestConfig(config_base.ConfigBase):

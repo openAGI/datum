@@ -1,17 +1,19 @@
 # core lib dep
 tensorflow==2.5.0
-opencv-python==4.2.0.32
-absl-py==0.10
-tqdm==4.39.0
+opencv-python==4.5.2.52
+absl-py>=0.10
+tqdm>=4.39.0
 
-# testing dep
-pytest==5.2.4
-pytest-xdist==1.30.0
+# test requirements
+pytest==6.2.4
+pytest-cov==2.12.0
+pytest-xdist==2.2.1
+coverage==5.5
 
-# sanity dep
-yapf==0.26.0
-docformatter==1.1
-isort==4.3.21
-mypy==0.770
-pylint==2.4.4
-pycodestyle==2.4.0
+# sanity requirements
+yapf==0.31.0
+docformatter==1.4
+isort==5.8.0
+mypy==0.812
+pylint==2.8.2
+pycodestyle==2.7.0

@@ -72,14 +72,13 @@ def export_to_tfrecord(input_path: str, output_path: str, problem_type: str,
   Path(output_path).mkdir(parents=True, exist_ok=True)
   for split, split_kwargs in splits.items():
     logging.info(f'Creating tfrecord writer for split: {split}.')
-    tfr_writer = TFRecordWriter(
-        generator,
-        write_configs.serializer,
-        output_path,
-        split,
-        split_kwargs["num_examples"],
-        sparse_features=write_configs.sparse_features,
-        **split_kwargs)
+    tfr_writer = TFRecordWriter(generator,
+                                write_configs.serializer,
+                                output_path,
+                                split,
+                                split_kwargs["num_examples"],
+                                sparse_features=write_configs.sparse_features,
+                                **split_kwargs)
     logging.info('Starting conversion process.')
     tfr_writer.create_records()
     logging.info(f'Completed tfrecord conversion for input split: {split}')

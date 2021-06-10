@@ -26,28 +26,30 @@ class TFRWriteConfigs(ConfigBase):
   A TFRWriteCOnfigs object can be used to control the parameter required for data generation,
   features type information, splits information and splitwise number of examples.
   """
-  generator = create_config(
-      name='generator',
-      ty=object,
-      docstring='Generator class instance, it should have a __call__ method.')
+  generator = create_config(name='generator',
+                            ty=object,
+                            docstring='Generator class instance, it should have a __call__ method.')
   serializer = create_config(
       name='serializer',
       ty=object,
       docstring='Serializer class instance, it should have a __call__ method.')
-  sparse_features = create_config(
-      name='sparse_features', ty=list, docstring='A list of sparse features name in the dataset.')
-  splits = create_config(
-      name='splits',
-      ty=dict,
-      docstring='A dict of split names as keys and \
+  sparse_features = create_config(name='sparse_features',
+                                  ty=list,
+                                  docstring='A list of sparse features name in the dataset.')
+  splits = create_config(name='splits',
+                         ty=dict,
+                         docstring='A dict of split names as keys and \
       split attributes as values in the dataset.')
-  num_train_examples = create_config(
-      name='num_train_examples', ty=int, docstring='Num of train examples in the dataset.')
-  num_val_examples = create_config(
-      name='num_val_examples', ty=int, docstring='Num of val examples in the dataset.')
+  num_train_examples = create_config(name='num_train_examples',
+                                     ty=int,
+                                     docstring='Num of train examples in the dataset.')
+  num_val_examples = create_config(name='num_val_examples',
+                                   ty=int,
+                                   docstring='Num of val examples in the dataset.')
 
-  num_test_examples = create_config(
-      name='num_test_examples', ty=int, docstring='Num of test examples in the dataset.')
+  num_test_examples = create_config(name='num_test_examples',
+                                    ty=int,
+                                    docstring='Num of test examples in the dataset.')
 
 
 class TFRReadConfigs(ConfigBase):
@@ -57,10 +59,9 @@ class TFRReadConfigs(ConfigBase):
   construct a tf.data.Dataset.
   """
 
-  experimental_interleave_sort_fn = create_config(
-      name='experimental_interleave_sort_fn',
-      ty=Callable,
-      docstring='Dataset interleave sort function.')
+  experimental_interleave_sort_fn = create_config(name='experimental_interleave_sort_fn',
+                                                  ty=Callable,
+                                                  docstring='Dataset interleave sort function.')
 
   shuffle_reshuffle_each_iteration = create_config(
       name='shuffle_reshuffle_each_iteration',

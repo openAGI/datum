@@ -69,16 +69,18 @@ class TFRecordWriter():
 
   def cache_records(self) -> None:
     """Write data to cache."""
-    for key, datum in tqdm(
-        self.generator(**self.gen_kwargs), unit=" examples", total=self.total_examples, leave=False):
+    for key, datum in tqdm(self.generator(**self.gen_kwargs),
+                           unit=" examples",
+                           total=self.total_examples,
+                           leave=False):
       if self.sparse_features:
         logging.debug(f'Adding shapes info to datum for sparse features: {self.sparse_features}.')
         datum = self.add_shape_fields(datum)
       serialized_record = self.serializer(datum)
       self.shuffler.add(key, serialized_record)
       self.current_examples += 1
-    with tf.io.gfile.GFile(
-        os.path.join(self._base_path, 'datum_to_type_and_shape_mapping.json'), 'w') as js_f:
+    with tf.io.gfile.GFile(os.path.join(self._base_path, 'datum_to_type_and_shape_mapping.json'),
+                           'w') as js_f:
       logging.info(f'Saving datum type and shape metadata to {self._base_path}.')
       types_shapes = datum_to_type_and_shape(datum, self.sparse_features)
       json.dump(types_shapes, js_f)

@@ -67,8 +67,8 @@ class DatumParser():
         if value['type'] == 'string':
           mapping[key] = tf.io.FixedLenFeature([], self.pytype_to_tftype[value['type']])
         else:
-          mapping[key] = tf.io.FixedLenFeature(
-              self.wrap_shape(value['shape']), self.pytype_to_tftype[value['type']])
+          mapping[key] = tf.io.FixedLenFeature(self.wrap_shape(value['shape']),
+                                               self.pytype_to_tftype[value['type']])
       else:
         mapping[key] = tf.io.VarLenFeature(self.pytype_to_tftype[value['type']])
     return mapping
@@ -123,8 +123,8 @@ class DatumParser():
         original_shape = self.datum_to_type_shape[key]['shape']
         if len(original_shape) >= 2:
           if key + '_shape' in parsed_example:
-            deserialized_outputs[key] = tf.reshape(
-                tf.sparse.to_dense(value), parsed_example[key + '_shape'])
+            deserialized_outputs[key] = tf.reshape(tf.sparse.to_dense(value),
+                                                   parsed_example[key + '_shape'])
           else:
             if self.datum_to_type_shape[key]['dense']:
               deserialized_outputs[key] = tf.reshape(value, original_shape)

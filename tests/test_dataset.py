@@ -136,6 +136,5 @@ class TestTextJsonDataset(absltest.TestCase):
     self.assertEqual(batch['text'].shape, [3])
     self.assertEqual(batch['polarity'].shape, [3])
     np.array_equal(batch['polarity'].numpy(), [1, 2, 0])
-    self.assertEqual(
-        list(batch['text'].numpy()),
-        [b'this is label file', b'this is json file', b'this is text file'])
+    self.assertEqual(list(batch['text'].numpy()),
+                     [b'this is label file', b'this is json file', b'this is text file'])
