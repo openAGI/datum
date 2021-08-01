@@ -15,6 +15,8 @@ The purpose of this library to make it easier for end-user to create and read tf
 
 ## Getting Started
 
+This project supports `Python >= 3.7`
+
 ### Installation
 
 #### Using pip
