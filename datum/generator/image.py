@@ -64,6 +64,7 @@ class ClfDatumGenerator(DatumGenerator):
     image_dir: directroy name containing the image, default name is split name.
     csv_path: labels filename, default name is `<split>.csv`
   """
+
   def generate_datum(self, **kwargs: Any) -> GeneratorReturnType:
     """Yields Example instances from given CSV.
 
