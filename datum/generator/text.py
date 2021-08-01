@@ -30,19 +30,29 @@ class TextJsonDatumGenerator(DatumGenerator):
   This can be used for classification or generative modeling. This expect data to be in json
   format with each of the examples keyed using an unique id. Each example should have two
   mandatory attributes: `text` and `label` (it is a nested attribute).
-  For example a sample json file would looks as follows:
-    train.json:
-    {1: {'text': 'I am the one', 'label': {'polarity': 1}},
-    ...
-    N: {'text': 'Such a beautiful day', 'label': {'polarity': 2}}
-    }
 
   Input path should have json files for training/development/validation.
   By default the generator search for json file named after split name, but it can be configured
-  by using the keyword argument `json_path`.
+  by using the keyword argument `json_path` to `__call__`.
+
+  + data_path
+      - train.json (json file containing the training data)
+        For example a sample json file would looks as follows:
+        ```
+            {1: {'text': 'I am the one', 'label': {'polarity': 1}},
+            ...
+            N: {'text': 'Such a beautiful day', 'label': {'polarity': 2}}
+            }
+        ```
+
+      - val.json (json file containing the val data)
+      - test.json (json file containing the test data)
+
   Following are the supported keyword arguments:
-    * split: name of the split
-    * json_path:name of the json file for that split, this is a relative path with respect to
+
+  Kwargs:
+    split: name of the split
+    json_path:name of the json file for that split, this is a relative path with respect to
       parent `self.path`.
   """
 
@@ -51,10 +61,12 @@ class TextJsonDatumGenerator(DatumGenerator):
 
     Args:
       kwargs: optional keyword arguments for customization.
-        Following are the supported keyword arguments:
-          * split: name of the split
-          * json_path:name of the json file for that split, this is a relative path with respect to
-             parent `self.path`.
+
+      Following are the supported keyword arguments:
+
+      split: name of the split
+      json_path:name of the json file for that split, this is a relative path with respect to
+        parent `self.path`.
 
     Returns:
       a tuple of a unique id and a dictionary with feature names as keys and feature values as

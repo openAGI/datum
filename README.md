@@ -30,6 +30,15 @@ conda env create -f environment.yml
 conda activate datum
 ```
 
+##### Generate API documentation
+```Shell
+pip install mkdocs==1.2.2
+pip install lazydocs==0.4.8
+
+lazydocs datum --output-path docs/api-docs  --overview-file README.md
+mkdocs serve
+```
+
 ### Create tfeecord dataset 
 Dataset can be created by using the following command
 ```Shell
