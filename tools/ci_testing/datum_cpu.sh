@@ -27,5 +27,5 @@ export CC_OPT_FLAGS='-mavx'
 export TF_NEED_CUDA=0
 
 export PYTHON_PATH=$PWD
-pytest -v tests
+pytest -v -rs --cov-report term-missing --cov=datum --durations=10 -n ${N_JOBS} tests/
 exit $?
