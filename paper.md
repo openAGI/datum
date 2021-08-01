@@ -21,7 +21,8 @@ bibliography: paper.bib
 ---
 
 # Summary
-Deep learning model training efficiency depends on the performance of the input pipeline. Especially when training very deep neural network using GPU servers,
+Deep learning model training efficiency depends on the performance of the input pipeline.
+Especially when training very deep neural network using GPU servers,
 efficient input pipeline can significantly help reducing overall learning time.
 Tensorflow provides TFRecord format to store data in a sequence of
 serialized protocol buffers as a binary record and `tf.data.Dataset` API for building
@@ -46,6 +47,31 @@ GPU sitting idle waiting for data slow down model the training process by a huge
 margin. That’s where Tensorflow's TFRecord format and `tf.data.Dataset` API come
 to the rescue.
 
+The conventional way of creating TFRecord datasets is time-consuming and complex, also
+need a level of expertise in Tensorflow. Each sample case of the dataset needs to
+converted to `tf.train.Example` format with correct a data type of each feature.
+
+Below is an example function to convert a sample case to `tf.train.Example`.
+```Python
+def case_to_tfexample(image_data, filename, height, width, image_format):
+  """Converts one sample case to tf example."""
+  return tf.train.Example(features=tf.train.Features(feature={
+      'image/encoded': _bytes_list_feature(image_data),
+      'image/filename': _bytes_list_feature(filename),
+      'image/format': _bytes_list_feature(
+          _IMAGE_FORMAT_MAP[image_format]),
+      'image/height': _int64_list_feature(height),
+      'image/width': _int64_list_feature(width),
+      'image/channels': _int64_list_feature(3),
+  }))
+
+```
+Additionally, the user will need to write code to write these examples to tfrecord files,
+choosing a reasonable number of shards for storing the records, handling thousands of
+sample cases, and many more related complexities to write the data to disk. Loading the data
+from tfrecords files to a `tf.data.Dataset` dataset for training or inference also
+involves similar complexities. 
+
 `Datum` is designed to build an efficient input pipeline for training deep learning
 models using Tensorflow. `Datum` provides two high-level APIs for creating and loading
 TFRecord files. For creating a TFRecord dataset without writing a lot of codes, `Datum`
@@ -67,6 +93,14 @@ data scientists, and data engineers to build efficient input pipelines. The
 combination of transformation features, fast run-time, and distributed training
 functionality in `Datum`[@datum] will enable researchers and developers to build
 input pipelines for complex problems. 
+
+
+# Related Work
+
+Tensorflow `Datasets` [@tfds] provides APIs to read many publicly available datasets
+as `tf.data.Dataset`. However, it does not provide ready-to-use APIs for loading custom datasets.
+For custom datasets, user will need to extend Datasets API to create TFRecord files and
+load the TFrecord datasets as `tf.data.Dataset`.
 
 
 # Features
