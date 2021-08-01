@@ -15,6 +15,8 @@ The purpose of this library to make it easier for end-user to create and read tf
 
 ## Getting Started
 
+This project supports `Python >= 3.7`
+
 ### Installation
 
 #### Using pip
@@ -28,6 +30,15 @@ git clone https://github.com/openagi/datum.git
 cd datum
 conda env create -f environment.yml
 conda activate datum
+```
+
+##### Generate API documentation
+```Shell
+pip install mkdocs==1.2.2
+pip install lazydocs==0.4.8
+
+lazydocs datum --output-path docs/api-docs  --overview-file README.md
+mkdocs serve
 ```
 
 ### Create tfeecord dataset 
