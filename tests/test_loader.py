@@ -19,14 +19,14 @@ import tensorflow as tf
 from absl.testing import absltest
 
 from datum.reader.loader import load
-from tests.utils import _test_create_det_records
+from tests import utils
 
 
 class TestDataset(absltest.TestCase):
 
   def setUp(self):
     self.tempdir = tempfile.mkdtemp()
-    _test_create_det_records(self.tempdir)
+    utils._test_create_det_records(self.tempdir)
     self._dataset = load(self.tempdir)
     dataset_configs = self._dataset.dataset_configs
     dataset_configs.batch_size_train = 1
