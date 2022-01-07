@@ -145,6 +145,63 @@ class DatasetConfigs(ConfigBase):
           serving.',
       default_factory=lambda: False,
   )
+  drop_remainder = create_config(
+      name='drop_remainder',
+      ty=bool,
+      docstring='Whether the last batch should be dropped in the case it has fewer than\
+          batch_size elements',
+      default_factory=lambda: True,
+  )
+  drop_remainder_val = create_config(
+      name='drop_remainder_val',
+      ty=bool,
+      docstring='Whether the last batch should be dropped in the case it has fewer than\
+          batch_size elements',
+      default_factory=lambda: False,
+  )
+  drop_remainder_test = create_config(
+      name='drop_remainder_test',
+      ty=bool,
+      docstring='Whether the last batch should be dropped in the case it has fewer than\
+          batch_size elements',
+      default_factory=lambda: False,
+  )
+  deterministic = create_config(
+      name='deterministic',
+      ty=bool,
+      docstring='When `num_parallel_calls` is specified, if this boolean is specified\
+        (True or False), it controls the order in which the transformation produces elements.\
+        If set to False, the transformation is allowed to yield elements out of order to trade\
+        determinism for performance. If not specified, the `tf.data.Options.deterministic`\
+        option (True by default) controls the behavior.',
+      default_factory=lambda: False,
+  )
+  deterministic_val = create_config(
+      name='deterministic_val',
+      ty=bool,
+      docstring='When `num_parallel_calls` is specified, if this boolean is specified\
+        (True or False), it controls the order in which the transformation produces elements.\
+        If set to False, the transformation is allowed to yield elements out of order to trade\
+        determinism for performance. If not specified, the `tf.data.Options.deterministic`\
+        option (True by default) controls the behavior.',
+      default_factory=lambda: False,
+  )
+  deterministic_test = create_config(
+      name='deterministic_test',
+      ty=bool,
+      docstring='When `num_parallel_calls` is specified, if this boolean is specified\
+        (True or False), it controls the order in which the transformation produces elements.\
+        If set to False, the transformation is allowed to yield elements out of order to trade\
+        determinism for performance. If not specified, the `tf.data.Options.deterministic`\
+        option (True by default) controls the behavior.',
+      default_factory=lambda: False,
+  )
+  num_parallel_calls = create_config(
+      name='num_parallel_calls',
+      ty=int,
+      docstring='The number of batches to compute asynchronously in parallel.',
+      default_factory=lambda: 1,
+  )
   batch_size_train = create_config(
       name='batch_size_train',
       ty=int,

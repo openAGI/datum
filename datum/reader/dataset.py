@@ -56,6 +56,8 @@ class Dataset():
             shuffle: bool = False,
             echoing: Optional[int] = None,
             full_dataset: bool = False,
+            drop_remainder: bool = False,
+            deterministic: bool = False,
             pre_batching_callback: Optional[Callable[[Dict], Dict]] = None,
             post_batching_callback: Optional[Callable[[Dict], Dict]] = None) -> DatasetType:
     """Read and process data from tfrecord files.
@@ -70,6 +72,13 @@ class Dataset():
       shuffle: whether to shuffle examples in the dataset.
       echoing: batch echoing factor, if not None perform batch_echoing.
       full_dataset: if true, return the dataset as a single batch for dataset with single element.
+      drop_remainder: Whether the last batch should be dropped in the case it has fewer than
+        `batch_size` elements.
+      deterministic: When `num_parallel_calls` is specified, if this boolean is specified
+        (True or False), it controls the order in which the transformation produces elements.
+        If set to False, the transformation is allowed to yield elements out of order to trade
+        determinism for performance. If not specified, the `tf.data.Options.deterministic`
+        option (True by default) controls the behavior.
       pre_batching_callback: data processing to apply before batching.
       post_batching_callback: data processing to apply post batching. This fucntion should support
         batch processsing.
@@ -93,16 +102,23 @@ class Dataset():
     if bucket_fn:
       logging.info(
           f'Using bucketing to batch data, bucket_params: {self._dataset_configs.bucket_op}')
-      bucket_op = tf.data.experimental.bucket_by_sequence_length(
+      dataset = dataset.bucket_by_sequence_length(
           bucket_fn,
           self._dataset_configs.bucket_op.bucket_boundaries,
           self._dataset_configs.bucket_op.bucket_batch_sizes,
           padded_shapes=tf.compat.v1.data.get_output_shapes(dataset),
           padding_values=None,
+          drop_remainder=drop_remainder,
           pad_to_bucket_boundary=False)
-      dataset = dataset.apply(bucket_op)
-    elif batch_size:
-      dataset = dataset.padded_batch(batch_size, padded_shapes=self.padded_shapes)
+    elif batch_size and not deterministic:
+      dataset = dataset.padded_batch(batch_size,
+                                     padded_shapes=self.padded_shapes,
+                                     drop_remainder=drop_remainder)
+    elif batch_size and deterministic:
+      dataset = dataset.batch(batch_size,
+                              drop_remainder=drop_remainder,
+                              num_parallel_calls=self._dataset_configs.num_parallel_calls,
+                              deterministic=deterministic)
     if echoing:
       dataset = dataset.flat_map(
           lambda example: tf.data.Dataset.from_tensors(example).repeat(echoing))
@@ -152,6 +168,8 @@ class Dataset():
                       shuffle=shuffle,
                       echoing=self._dataset_configs.echoing,
                       full_dataset=self._dataset_configs.full_dataset,
+                      drop_remainder=self._dataset_configs.drop_remainder,
+                      deterministic=self._dataset_configs.deterministic,
                       pre_batching_callback=self._dataset_configs.pre_batching_callback_train,
                       post_batching_callback=self._dataset_configs.post_batching_callback_train)
 
@@ -176,6 +194,8 @@ class Dataset():
                       shuffle=shuffle,
                       echoing=None,
                       full_dataset=self._dataset_configs.full_dataset,
+                      drop_remainder=self._dataset_configs.drop_remainder_val,
+                      deterministic=self._dataset_configs.deterministic_val,
                       pre_batching_callback=self._dataset_configs.pre_batching_callback_val,
                       post_batching_callback=self._dataset_configs.post_batching_callback_val)
 
@@ -200,5 +220,7 @@ class Dataset():
                       shuffle=shuffle,
                       echoing=None,
                       full_dataset=self._dataset_configs.full_dataset,
+                      drop_remainder=self._dataset_configs.drop_remainder_test,
+                      deterministic=self._dataset_configs.deterministic_test,
                       pre_batching_callback=self._dataset_configs.pre_batching_callback_test,
                       post_batching_callback=self._dataset_configs.post_batching_callback_test)
