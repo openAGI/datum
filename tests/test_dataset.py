@@ -31,6 +31,9 @@ class TestClfDataset(absltest.TestCase):
     configs = DatasetConfigs()
     configs.batch_size_train = 1
     configs.batch_size_val = 1
+    configs.drop_remainder = True
+    configs.drop_remainder_val = True
+    configs.deterministic_val = True
     self._dataset = Dataset(self.tempdir, configs)
 
   def tearDown(self):
