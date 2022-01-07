@@ -1,6 +1,6 @@
 # datum
 
-<a href="https://github.com/openagi/datum/actions?query=workflow%3Adatum_py37"><img alt="Datum Build Status" src="https://github.com/openagi/datum/workflows/datum_py37/badge.svg"></a>
+<a href="https://github.com/openagi/datum/actions?query=workflow%3Adatum_py38"><img alt="Datum Build Status" src="https://github.com/openagi/datum/workflows/datum_py38/badge.svg"></a>
 [![PyPI version](https://badge.fury.io/py/datum.svg)](https://badge.fury.io/py/datum)
 [![TensorFlow 2.7](https://img.shields.io/badge/TensorFlow-2.7-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.7.0)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
