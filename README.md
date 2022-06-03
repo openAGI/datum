@@ -41,6 +41,12 @@ lazydocs datum --output-path docs/api-docs  --overview-file README.md
 mkdocs serve
 ```
 
+### Example notebooks on Google Colab
+
+1. Image Classification: [Transfer learning using Datum and Keras](https://colab.research.google.com/drive/1_r34J0MgdC7yCIVtH_EV0ne5q2y6EaH9?usp=sharing).
+2. Text Classification: [BERT based text classofocation using Datum and Tensorflow Text](https://colab.research.google.com/drive/1D5U6NvioF-T8Nhvzzkuskw85Ki1yGR6K?usp=sharing).
+
+
 ### Create tfeecord dataset 
 Dataset can be created by using the following command
 ```Shell
