@@ -70,7 +70,8 @@ class AttrDict(dict):
 
   def __setattr__(self, name: str, value: Any) -> None:
     if hasattr(self.__class__, name):
-      raise AttributeError("'Dict' object attribute " "'{0}' is read-only".format(name))
+      raise AttributeError("'Dict' object attribute "
+                           "'{0}' is read-only".format(name))
     else:
       self[name] = value
 
