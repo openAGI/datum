@@ -188,8 +188,8 @@ class DetDatumGenerator(DatumGenerator):
     image_filepath = os.path.join(data_path, image_dir, image_id + extension)
     annon_filepath = os.path.join(data_path, annon_dir, image_id + '.xml')
     if load_annotations:
-      xmin, xmax, ymin, ymax, area, label, pose, is_truncated, is_difficult = self._get_example_objects(
-          annon_filepath)
+      xmin, xmax, ymin, ymax, area, label, pose, is_truncated, is_difficult = \
+          self._get_example_objects(annon_filepath)
     else:
       xmin = []
       xmax = []
