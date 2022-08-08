@@ -47,7 +47,7 @@ def _test_create_det_records(path):
                                                         class_map=class_map))
   gen_kwargs = {'image_set': 'ImageSets'}
   sparse_features = [
-      'xmin', 'xmax', 'ymin', 'ymax', 'labels', 'pose', 'is_truncated', 'labels_difficult'
+      'xmin', 'xmax', 'ymin', 'ymax', 'area', 'labels', 'pose', 'is_truncated', 'labels_difficult'
   ]
   writer = TFRecordWriter(det_gen,
                           serializer,

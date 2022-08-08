@@ -77,7 +77,7 @@ class TestDetDatumParser(absltest.TestCase):
                                                           class_map=class_map))
     gen_kwargs = {'image_set': 'ImageSets'}
     sparse_features = [
-        'xmin', 'xmax', 'ymin', 'ymax', 'labels', 'pose', 'is_truncated', 'labels_difficult'
+        'xmin', 'xmax', 'ymin', 'ymax', 'area', 'labels', 'pose', 'is_truncated', 'labels_difficult'
     ]
     self.writer = TFRecordWriter(DET_GEN,
                                  self.serializer,
@@ -98,7 +98,8 @@ class TestDetDatumParser(absltest.TestCase):
     dataset = dataset.batch(1)
     batch = next(iter(dataset))
     self.assertEqual(list(batch.keys()), [
-        'is_truncated', 'labels', 'labels_difficult', 'pose', 'xmax', 'xmin', 'ymax', 'ymin', 'image'
+        'area', 'is_truncated', 'labels', 'labels_difficult', 'pose', 'xmax', 'xmin', 'ymax', 'ymin',
+        'image'
     ])
     self.assertEqual(batch['image'].shape, [1, 500, 486, 3])
     self.assertEqual(batch['xmin'].numpy(), np.asarray([0.3580247], dtype=np.float32))
