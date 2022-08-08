@@ -72,20 +72,22 @@ class TestDetDatumGenerator(absltest.TestCase):
     values = {
         '2007_000027': [
             'tests/dummy_data/det/voc/JPEGImages/2007_000027.jpg', [0.35802469135802467],
-            [0.7181069958847737], [0.202], [0.702], ['unspecified'], [15], [False], [False]
+            [0.7181069958847737], [0.202], [0.702], [0.18004115226337447], ['unspecified'], [15],
+            [False], [False]
         ],
         '2007_000032': [
             'tests/dummy_data/det/voc/JPEGImages/2007_000032.jpg', [0.208, 0.266, 0.39, 0.052],
             [0.75, 0.394, 0.426, 0.088],
             [0.2775800711743772, 0.31316725978647686, 0.6405693950177936, 0.6725978647686833],
             [0.6512455516014235, 0.4377224199288256, 0.8149466192170819, 0.8469750889679716],
+            [0.2025266903914591, 0.01594306049822064, 0.006277580071174373, 0.006277580071174377],
             ['frontal', 'left', 'rear', 'rear'], [1, 1, 15, 15], [False, False, False, False],
             [False, False, False, False]
         ],
     }
     for key, datum in self.det_gen(split='train', set_dir='ImageSets'):
       self.assertEqual(list(datum.keys()), [
-          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
+          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'area', 'pose', 'labels', 'is_truncated',
           'labels_difficult'
       ])
       self.assertEqual(list(datum.values()), values[key])
@@ -94,7 +96,7 @@ class TestDetDatumGenerator(absltest.TestCase):
                                    image_dir='JPEGImages',
                                    annotation_dir='Annotations'):
       self.assertEqual(list(datum.keys()), [
-          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
+          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'area', 'pose', 'labels', 'is_truncated',
           'labels_difficult'
       ])
       self.assertEqual(list(datum.values()), values[key])
@@ -103,12 +105,13 @@ class TestDetDatumGenerator(absltest.TestCase):
     values = {
         '2007_000027': [
             'tests/dummy_data/det/voc/JPEGImages/2007_000027.jpg', [0.35802469135802467],
-            [0.7181069958847737], [0.202], [0.702], ['unspecified'], [15], [False], [False]
+            [0.7181069958847737], [0.202], [0.702], [0.18004115226337447], ['unspecified'], [15],
+            [False], [False]
         ],
     }
     for key, datum in self.det_gen(split='val', set_dir='ImageSets'):
       self.assertEqual(list(datum.keys()), [
-          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
+          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'area', 'pose', 'labels', 'is_truncated',
           'labels_difficult'
       ])
       self.assertEqual(list(datum.values()), values[key])
@@ -117,7 +120,7 @@ class TestDetDatumGenerator(absltest.TestCase):
                                    image_dir='JPEGImages',
                                    annotation_dir='Annotations'):
       self.assertEqual(list(datum.keys()), [
-          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'pose', 'labels', 'is_truncated',
+          'image', 'xmin', 'xmax', 'ymin', 'ymax', 'area', 'pose', 'labels', 'is_truncated',
           'labels_difficult'
       ])
       self.assertEqual(list(datum.values()), values[key])
