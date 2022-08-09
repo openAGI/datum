@@ -305,3 +305,15 @@ class DatasetConfigs(ConfigBase):
         tfrecord files to construct a tf.data.Dataset.',
       default_factory=TFRReadConfigs,
   )
+  use_tf_padding = create_config(
+      name='use_tf_padding',
+      ty=bool,
+      docstring="If set True, uses Tensorflow interpreted shapes for padding.",
+      default_factory=lambda: False,
+  )
+  use_datum_padding = create_config(
+      name='use_datum_padding',
+      ty=bool,
+      docstring="If set True, uses Datum interpreted shapes for padding.",
+      default_factory=lambda: False,
+  )

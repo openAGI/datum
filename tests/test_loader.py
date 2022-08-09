@@ -57,6 +57,7 @@ class TestDataset(absltest.TestCase):
 
     dataset_configs = self._dataset.dataset_configs
     dataset_configs.pre_batching_callback_train = resize_image
+    dataset_configs.use_datum_padding = True
     self._dataset.daatset_configs = dataset_configs
     ds = self._dataset.train_fn('train', False)
     batch = next(iter(ds))
@@ -78,6 +79,7 @@ class TestDataset(absltest.TestCase):
     dataset_configs = self._dataset.dataset_configs
     dataset_configs.post_batching_callback_train = resize_image
     dataset_configs.batch_size_train = 2
+    dataset_configs.use_datum_padding = True
     self._dataset.daatset_configs = dataset_configs
     ds = self._dataset.train_fn('train', False)
     batch = next(iter(ds))
@@ -93,6 +95,7 @@ class TestDataset(absltest.TestCase):
     dataset_configs.post_batching_callback_train = resize_image
     dataset_configs.batch_size_train = 2
     dataset_configs.echoing = 2
+    dataset_configs.use_datum_padding = True
     ds = iter(self._dataset.train_fn('train', False))
     batch_1 = next(ds)
     self.assertEqual(batch_1['image'].shape, [2, 224, 224, 3])
