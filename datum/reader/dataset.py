@@ -58,6 +58,8 @@ class Dataset():
             full_dataset: bool = False,
             drop_remainder: bool = False,
             deterministic: bool = False,
+            use_tf_padding: bool = False,
+            use_datum_padding: bool = False,
             pre_batching_callback: Optional[Callable[[Dict], Dict]] = None,
             post_batching_callback: Optional[Callable[[Dict], Dict]] = None) -> DatasetType:
     """Read and process data from tfrecord files.
@@ -79,6 +81,8 @@ class Dataset():
         If set to False, the transformation is allowed to yield elements out of order to trade
         determinism for performance. If not specified, the `tf.data.Options.deterministic`
         option (True by default) controls the behavior.
+      use_tf_padding: Uses TF interpreted shapes for padding.
+      use_datum_padding: Uses datum interpreted shapes for padding.
       pre_batching_callback: data processing to apply before batching.
       post_batching_callback: data processing to apply post batching. This fucntion should support
         batch processsing.
@@ -102,19 +106,22 @@ class Dataset():
     if bucket_fn:
       logging.info(
           f'Using bucketing to batch data, bucket_params: {self._dataset_configs.bucket_op}')
-      dataset = dataset.bucket_by_sequence_length(
-          bucket_fn,
-          self._dataset_configs.bucket_op.bucket_boundaries,
-          self._dataset_configs.bucket_op.bucket_batch_sizes,
-          padded_shapes=tf.compat.v1.data.get_output_shapes(dataset),
-          padding_values=None,
-          drop_remainder=drop_remainder,
-          pad_to_bucket_boundary=False)
-    elif batch_size and not deterministic:
+      dataset = dataset.bucket_by_sequence_length(bucket_fn,
+                                                  self._dataset_configs.bucket_op.bucket_boundaries,
+                                                  self._dataset_configs.bucket_op.bucket_batch_sizes,
+                                                  padded_shapes=dataset.element_spec,
+                                                  padding_values=None,
+                                                  drop_remainder=drop_remainder,
+                                                  pad_to_bucket_boundary=False)
+    elif batch_size and (use_tf_padding or use_datum_padding):
+      if use_tf_padding:
+        padded_shapes = dataset.element_spec
+      else:
+        padded_shapes = self.padded_shapes
       dataset = dataset.padded_batch(batch_size,
-                                     padded_shapes=self.padded_shapes,
+                                     padded_shapes=padded_shapes,
                                      drop_remainder=drop_remainder)
-    elif batch_size and deterministic:
+    elif batch_size and (not use_tf_padding and not use_datum_padding):
       dataset = dataset.batch(batch_size,
                               drop_remainder=drop_remainder,
                               num_parallel_calls=self._dataset_configs.num_parallel_calls,
@@ -170,6 +177,8 @@ class Dataset():
                       full_dataset=self._dataset_configs.full_dataset,
                       drop_remainder=self._dataset_configs.drop_remainder,
                       deterministic=self._dataset_configs.deterministic,
+                      use_tf_padding=self._dataset_configs.use_tf_padding,
+                      use_datum_padding=self._dataset_configs.use_datum_padding,
                       pre_batching_callback=self._dataset_configs.pre_batching_callback_train,
                       post_batching_callback=self._dataset_configs.post_batching_callback_train)
 
@@ -196,6 +205,8 @@ class Dataset():
                       full_dataset=self._dataset_configs.full_dataset,
                       drop_remainder=self._dataset_configs.drop_remainder_val,
                       deterministic=self._dataset_configs.deterministic_val,
+                      use_tf_padding=self._dataset_configs.use_tf_padding,
+                      use_datum_padding=self._dataset_configs.use_datum_padding,
                       pre_batching_callback=self._dataset_configs.pre_batching_callback_val,
                       post_batching_callback=self._dataset_configs.post_batching_callback_val)
 
@@ -222,5 +233,7 @@ class Dataset():
                       full_dataset=self._dataset_configs.full_dataset,
                       drop_remainder=self._dataset_configs.drop_remainder_test,
                       deterministic=self._dataset_configs.deterministic_test,
+                      use_tf_padding=self._dataset_configs.use_tf_padding,
+                      use_datum_padding=self._dataset_configs.use_datum_padding,
                       pre_batching_callback=self._dataset_configs.pre_batching_callback_test,
                       post_batching_callback=self._dataset_configs.post_batching_callback_test)
