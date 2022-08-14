@@ -14,8 +14,8 @@
 # limitations under the License.
 
 import json
-import os
 from ast import literal_eval
+from pathlib import Path
 from typing import Any
 
 import tensorflow as tf
@@ -75,13 +75,17 @@ class TextJsonDatumGenerator(DatumGenerator):
     split = kwargs.get('split')
     if not split:
       raise ValueError('Pass a valid split name to generate data `__call__` method.')
-    json_path = kwargs.get('json_path', split + '.json')
-    with tf.io.gfile.GFile(os.path.join(self.path, json_path)) as json_f:
-      for key, value in json.load(json_f).items():
-        datum = {'text': value['text']}
-        for label_key, val in value['label'].items():
-          try:
-            datum[label_key] = literal_eval(val)
-          except ValueError:
-            datum[label_key] = val
-        yield key, datum
+    split_data_files = [
+        filename for filename in Path(self.path).iterdir()
+        if (filename.name.startswith(split) and filename.name.endswith(".json"))
+    ]
+    for split_data_file in split_data_files:
+      with tf.io.gfile.GFile(split_data_file) as json_f:
+        for key, value in json.load(json_f).items():
+          datum = {'text': value['text']}
+          for label_key, val in value['label'].items():
+            try:
+              datum[label_key] = literal_eval(val)
+            except Exception: # pylint: disable=broad-except
+              datum[label_key] = val
+          yield key, datum
