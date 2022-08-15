@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import abc
+from pathlib import Path
 from typing import Any, Union
 
 from datum.configs import ConfigBase
@@ -28,11 +29,16 @@ class DatumGenerator():
   Args:
     path: a path to the data store location.
     gen_config: configs for generator.
+
+  Raises:
+    ValueError: If input `path` is Nne or provided path does not exist.
   """
 
   def __init__(self, path: str, gen_config: Union[AttrDict, ConfigBase] = None):
     self.path = path
     self.gen_config = gen_config
+    if not self.path or (self.path and not Path(self.path).exists()):
+      raise ValueError("Input `path` does not exits or not provided.")
 
   def __call__(self, **kwargs: Any) -> GeneratorReturnType:
     """Returns a generator to iterate over the processed input data."""

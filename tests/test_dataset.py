@@ -125,19 +125,47 @@ class TestTextJsonDataset(absltest.TestCase):
 
   def setUp(self):
     self.tempdir = tempfile.mkdtemp()
-    _test_create_textjson_records(self.tempdir)
-    configs = DatasetConfigs()
-    configs.batch_size_train = 3
-    self._dataset = Dataset(self.tempdir, configs)
+    self.configs = DatasetConfigs()
+    self.configs.batch_size_train = 3
 
   def tearDown(self):
     rmtree(self.tempdir)
 
-  def test_train_fn(self):
+  def test_train_fn_json(self):
+    expected_data = _test_create_textjson_records(self.tempdir, use_two_files=False)
+    self._dataset = Dataset(self.tempdir, self.configs)
     ds = self._dataset.train_fn('train', False)
     batch = next(iter(ds))
     self.assertEqual(batch['text'].shape, [3])
     self.assertEqual(batch['polarity'].shape, [3])
-    np.array_equal(batch['polarity'].numpy(), [1, 2, 0])
-    self.assertEqual(list(batch['text'].numpy()),
-                     [b'this is label file', b'this is json file', b'this is text file'])
+    batch_data = {}
+    for idx, text_val in enumerate(batch["text"].numpy()):
+      batch_data[idx] = {
+          "text": text_val.decode("utf-8"),
+          "label": {
+              "polarity": batch["polarity"].numpy()[idx],
+              "question": batch["question"].numpy()[idx].decode("utf-8"),
+          }
+      }
+    for _, value in batch_data.items():
+      assert value in list(expected_data.values())
+
+  def test_train_fn_two_files(self):
+    expected_data = _test_create_textjson_records(self.tempdir, use_two_files=True)
+    self.configs.batch_size_train = 6
+    self._dataset = Dataset(self.tempdir, self.configs)
+    ds = self._dataset.train_fn('train', False)
+    batch = next(iter(ds))
+    self.assertEqual(batch['text'].shape, [6])
+    self.assertEqual(batch['polarity'].shape, [6])
+    batch_data = {}
+    for idx, text_val in enumerate(batch["text"].numpy()):
+      batch_data[idx] = {
+          "text": text_val.decode("utf-8"),
+          "label": {
+              "polarity": batch["polarity"].numpy()[idx],
+              "question": batch["question"].numpy()[idx].decode("utf-8"),
+          }
+      }
+    for _, value in batch_data.items():
+      assert value in list(expected_data.values())

@@ -65,7 +65,7 @@ class TFRecordWriter():
     self.split = split
     self.sparse_features = sparse_features or []
     self.gen_kwargs = gen_kwargs or {}
-    self.gen_kwargs.update({'split': self.split})
+    self.gen_kwargs.update({"split": self.split})
 
   def cache_records(self) -> None:
     """Write data to cache."""
@@ -74,22 +74,22 @@ class TFRecordWriter():
                            total=self.total_examples,
                            leave=False):
       if self.sparse_features:
-        logging.debug(f'Adding shapes info to datum for sparse features: {self.sparse_features}.')
+        logging.debug(f"Adding shapes info to datum for sparse features: {self.sparse_features}.")
         datum = self.add_shape_fields(datum)
       serialized_record = self.serializer(datum)
       self.shuffler.add(key, serialized_record)
       self.current_examples += 1
-    with tf.io.gfile.GFile(os.path.join(self._base_path, 'datum_to_type_and_shape_mapping.json'),
-                           'w') as js_f:
-      logging.info(f'Saving datum type and shape metadata to {self._base_path}.')
+    with tf.io.gfile.GFile(os.path.join(self._base_path, "datum_to_type_and_shape_mapping.json"),
+                           "w") as js_f:
+      logging.info(f"Saving datum type and shape metadata to {self._base_path}.")
       types_shapes = datum_to_type_and_shape(datum, self.sparse_features)
       json.dump(types_shapes, js_f)
 
   def create_records(self) -> None:
     """Create tfrecords from given generator."""
-    logging.info('Caching serialized binary example to cache.')
+    logging.info("Caching serialized binary example to cache.")
     self.cache_records()
-    logging.info('Writing data from cache to disk in `.tfrecord` format.')
+    logging.info("Writing data from cache to disk in `.tfrecord` format.")
     self.flush()
 
   def add_shape_fields(self, datum: DatumType) -> DatumType:
@@ -108,7 +108,7 @@ class TFRecordWriter():
       if sparse_key in datum:
         value = np.asarray(datum[sparse_key])
         if len(value.shape) >= 2:
-          new_fields[sparse_key + '_shape'] = list(value.shape)
+          new_fields[sparse_key + "_shape"] = list(value.shape)
     datum.update(new_fields)
     return datum
 
@@ -134,7 +134,7 @@ class TFRecordWriter():
     except DuplicatedKeysError as err:
       shard_utils.raise_error_for_duplicated_keys(err)
     shard_info = {
-        self.split: {spec.path.split('/')[-1]: int(spec.examples_number)
+        self.split: {spec.path.split("/")[-1]: int(spec.examples_number)
                      for spec in shard_specs}
     }
     self.save_shard_info(shard_info)
@@ -147,9 +147,9 @@ class TFRecordWriter():
     Args:
       shard_info: input shard info dict.
     """
-    if os.path.isfile(os.path.join(self._base_path, 'shard_info.json')):
-      with tf.io.gfile.GFile(os.path.join(self._base_path, 'shard_info.json'), 'r') as si_f:
+    if os.path.isfile(os.path.join(self._base_path, "shard_info.json")):
+      with tf.io.gfile.GFile(os.path.join(self._base_path, "shard_info.json"), "r") as si_f:
         prev_shard_info = json.load(si_f)
         shard_info.update(prev_shard_info)
-    with tf.io.gfile.GFile(os.path.join(self._base_path, 'shard_info.json'), 'w') as si_f:
+    with tf.io.gfile.GFile(os.path.join(self._base_path, "shard_info.json"), "w") as si_f:
       json.dump(shard_info, si_f)

@@ -78,34 +78,68 @@ def _test_create_seg_records(path):
   writer.create_records()
 
 
-def _test_create_textjson_records(path):
+def _test_create_textjson_records(path, use_two_files=False):
   tempdir = tempfile.mkdtemp()
   data = {
       1: {
           'text': 'this is text file',
           'label': {
-              'polarity': 1
+              'polarity': 1,
+              'question': "meaning of this line?",
           }
       },
       2: {
           'text': 'this is json file',
           'label': {
-              'polarity': 2
+              'polarity': 2,
+              'question': "meaning of this sentence?",
           }
       },
       3: {
           'text': 'this is label file',
           'label': {
-              'polarity': 0
+              'polarity': 0,
+              'question': "meaning of this para?",
           }
       },
   }
+  num_examples = 3
+  final_data = data
+  if use_two_files:
+    data_2 = {
+        4: {
+            'text': 'this is next text file',
+            'label': {
+                'polarity': 4,
+                'question': "meaning of next line?",
+            }
+        },
+        5: {
+            'text': 'this is next json file',
+            'label': {
+                'polarity': 5,
+                'question': "meaning of next sentence?",
+            }
+        },
+        6: {
+            'text': 'this is next label file',
+            'label': {
+                'polarity': 6,
+                'question': "meaning of next para?",
+            }
+        },
+    }
+    with open(os.path.join(tempdir, 'train_2.json'), 'w') as f:
+      json.dump(data_2, f)
+    num_examples = 6
+    final_data = {**data, **data_2}
   with open(os.path.join(tempdir, 'train.json'), 'w') as f:
     json.dump(data, f)
   gen_from_json = text.TextJsonDatumGenerator(tempdir)
   serializer = DatumSerializer('text')
   Path(path).mkdir(parents=True, exist_ok=True)
   textjson_gen = text.TextJsonDatumGenerator(tempdir)
-  writer = TFRecordWriter(textjson_gen, serializer, path, 'train', 3)
+  writer = TFRecordWriter(textjson_gen, serializer, path, 'train', num_examples)
   writer.create_records()
   rmtree(tempdir)
+  return final_data
