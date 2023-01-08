@@ -1,5 +1,5 @@
 # core lib dep
-tensorflow==2.9.3
+tensorflow==2.11.0
 opencv-python==4.5.*
 absl-py>=0.10
 tqdm>=4.39.0

@@ -97,8 +97,8 @@ class TestDetDataset(absltest.TestCase):
     batch = next(iter(ds))
     self.assertEqual(batch['image'].shape, [1, 281, 500, 3])
     np.array_equal(batch['xmin'].numpy(), np.array([0.208, 0.266, 0.39, 0.052], dtype=np.float32))
-    np.array_equal(batch['pose'], np.asarray([[b'frontal', b'left', b'rear', b'rear']],
-                                             dtype=np.str))
+    np.array_equal(batch['pose'],
+                   np.asarray([[b'frontal', b'left', b'rear', b'rear']], dtype=np.unicode_))
 
 
 class TestSegDataset(absltest.TestCase):
