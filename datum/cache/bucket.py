@@ -1,4 +1,3 @@
-# coding=utf-8
 # Copyright 2020 The OpenAGI Datum Authors.
 # Copyright 2020 The TensorFlow Datasets Authors.
 #
@@ -21,9 +20,9 @@ import math
 import os
 import struct
 import uuid
-from typing import Generator, List, Optional, Tuple
+from collections.abc import Generator
+from typing import Optional
 
-import six
 import tensorflow.compat.v2 as tf
 
 from datum.utils.hashing import Hasher
@@ -51,7 +50,7 @@ HKEY_SIZE_BYTES = HKEY_SIZE // 8
 class DuplicatedKeysError(Exception):
 
   def __init__(self, item1: Optional[bytes] = None, item2: Optional[bytes] = None):
-    super(DuplicatedKeysError, self).__init__()
+    super().__init__()
     self.item1 = item1
     self.item2 = item2
 
@@ -75,7 +74,7 @@ def get_bucket_number(hkey: int, shards_number: int) -> int:
   return math.trunc((hkey * shards_number) >> HKEY_SIZE)
 
 
-class _Bucket(object):
+class _Bucket:
   """Holds (key, binary value) tuples to disk, fast.
 
   Bucket instances are designed to be used either:
@@ -142,7 +141,7 @@ class _Bucket(object):
       self._fobj.flush()
       self._fobj.close()
 
-  def read_values(self) -> Generator[Tuple[int, bytes], None, None]:
+  def read_values(self) -> Generator[tuple[int, bytes], None, None]:
     """Yields (hkey, data) tuples stored in bucket."""
     self.flush()
     path = self._path
@@ -167,7 +166,7 @@ class _Bucket(object):
       tf.io.gfile.remove(self._path)
 
 
-class Shuffler(object):
+class Shuffler:
   """Stores data in temp buckets, restitute it shuffled."""
 
   def __init__(self, dirpath: str, hash_salt: str):
@@ -179,7 +178,7 @@ class Shuffler(object):
     """
     grp_name = uuid.uuid4()
     self._hasher = Hasher(hash_salt)
-    self._buckets: List[_Bucket] = []
+    self._buckets: list[_Bucket] = []
     for i in range(BUCKETS_NUMBER):
       path = os.path.join(dirpath, 'bucket_%s_%03d.tmp' % (grp_name, i))
       self._buckets.append(_Bucket(path))
@@ -187,7 +186,7 @@ class Shuffler(object):
     self._total_bytes = 0
     # To keep data in memory until enough data has been gathered.
     self._in_memory = True
-    self._mem_buffer: List[Tuple[int, bytes]] = []
+    self._mem_buffer: list[tuple[int, bytes]] = []
 
   @property
   def size(self) -> int:
@@ -195,7 +194,7 @@ class Shuffler(object):
     return self._total_bytes
 
   @property
-  def bucket_lengths(self) -> List[int]:
+  def bucket_lengths(self) -> list[int]:
     if self._in_memory:
       return [len(self._mem_buffer)]
     return [len(b) for b in self._buckets]
@@ -216,7 +215,7 @@ class Shuffler(object):
     """Add (key, data) to shuffler."""
     if self._read_only:
       raise AssertionError('add() cannot be called after __iter__.')
-    if not isinstance(data, six.binary_type):
+    if not isinstance(data, bytes):
       raise AssertionError('Only bytes (not %s) can be stored in Shuffler!' % (type(data)))
     hkey = self._hasher.hash_key(key)
     self._total_bytes += len(data)
@@ -237,13 +236,11 @@ class Shuffler(object):
       yield data
       previous_data = data
 
-  def _iter_mem(self) -> Generator[Tuple[int, bytes], None, None]:
-    for hkey, data in sorted(self._mem_buffer):
-      yield hkey, data
+  def _iter_mem(self) -> Generator[tuple[int, bytes], None, None]:
+    yield from sorted(self._mem_buffer)
 
-  def _iter_buckets(self) -> Generator[Tuple[int, bytes], None, None]:
+  def _iter_buckets(self) -> Generator[tuple[int, bytes], None, None]:
     for bucket in self._buckets:
       bucket_data = sorted(bucket.read_values())
       bucket.del_file()
-      for hkey, data in bucket_data:
-        yield hkey, data
+      yield from bucket_data

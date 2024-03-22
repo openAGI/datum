@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Callable, Dict
+from typing import Any, Callable
 
 import numpy as np
 import tensorflow as tf
@@ -32,7 +32,7 @@ class DatumSerializer():
 
   def __init__(self,
                problem_type: str,
-               datum_name_to_encoder_fn: Callable[[DatumType, str], Dict[str, Encoder]] = None):
+               datum_name_to_encoder_fn: Callable[[DatumType, str], dict[str, Encoder]] = None):
     self.problem_type = problem_type
     self.feature_converter = datum_name_to_encoder_fn or datum_name_to_encoder
     self.serializer = serialize_datum

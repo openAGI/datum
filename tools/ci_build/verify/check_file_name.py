@@ -12,7 +12,7 @@ def main():
   # Make sure BASE_DIR is project root.
   # If it doesn't, we probably computed the wrong directory.
   if not os.path.isdir(os.path.join(BASE_DIR, 'datum')):
-    raise AssertionError('BASE_DIR = {} is not project root'.format(BASE_DIR))
+    raise AssertionError(f'BASE_DIR = {BASE_DIR} is not project root')
 
   for dirpath, dirnames, filenames in os.walk(BASE_DIR, followlinks=True):
     lowercase_directories = [x.lower() for x in dirnames]

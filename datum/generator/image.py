@@ -16,7 +16,7 @@ import csv
 import os
 import xml.etree.ElementTree
 from ast import literal_eval
-from typing import Any, Dict, List, Tuple, no_type_check
+from typing import Any, no_type_check
 
 import tensorflow as tf
 
@@ -88,7 +88,7 @@ class ClfDatumGenerator(DatumGenerator):
     sub_dir = kwargs.get('image_dir', split)
     csv_path = kwargs.get('csv_path', split + '.csv')
     data_path = os.path.join(self.path, sub_dir)
-    data: List[Dict] = []
+    data: list[dict] = []
     with tf.io.gfile.GFile(os.path.join(self.path, csv_path)) as csv_f:
       reader = csv.DictReader(csv_f)
       for row in reader:
@@ -100,8 +100,7 @@ class ClfDatumGenerator(DatumGenerator):
             feature_value = os.path.join(data_path, feature_value + extension)
             feature_dict['image'] = feature_value
         data.append(feature_dict)
-    for idx, datum in enumerate(data):
-      yield idx, datum
+    yield from enumerate(data)
 
 
 class DetDatumGenerator(DatumGenerator):
@@ -171,7 +170,7 @@ class DetDatumGenerator(DatumGenerator):
         yield image_id, example
 
   def _generate_example(self, data_path: str, image_dir: str, annon_dir: str, image_id: str,
-                        extension: str, load_annotations: bool) -> Dict:
+                        extension: str, load_annotations: bool) -> dict:
     """Generate a single example of the dataset.
 
     Args:
@@ -214,7 +213,7 @@ class DetDatumGenerator(DatumGenerator):
     }
 
   @no_type_check
-  def _get_example_objects(self, annon_filepath: str) -> Tuple:
+  def _get_example_objects(self, annon_filepath: str) -> tuple:
     """Function to get all the objects from the annotation XML file."""
     with tf.io.gfile.GFile(annon_filepath, "r") as f:
       root = xml.etree.ElementTree.parse(f).getroot()
@@ -222,15 +221,15 @@ class DetDatumGenerator(DatumGenerator):
       width = float(size.find("width").text)
       height = float(size.find("height").text)
 
-      xmin: List[float] = []
-      xmax: List[float] = []
-      ymin: List[float] = []
-      ymax: List[float] = []
-      area: List[float] = []
-      label: List[int] = []
-      pose: List[str] = []
-      is_truncated: List[bool] = []
-      is_difficult: List[bool] = []
+      xmin: list[float] = []
+      xmax: list[float] = []
+      ymin: list[float] = []
+      ymax: list[float] = []
+      area: list[float] = []
+      label: list[int] = []
+      pose: list[str] = []
+      is_truncated: list[bool] = []
+      is_difficult: list[bool] = []
       for obj in root.findall("object"):
         class_id = obj.find("name").text.lower()
         if isinstance(class_id, str):
@@ -238,8 +237,8 @@ class DetDatumGenerator(DatumGenerator):
         else:
           label.append(class_id)
         pose.append(obj.find("pose").text.lower())
-        is_truncated.append((obj.find("truncated").text == "1"))
-        is_difficult.append((obj.find("difficult").text == "1"))
+        is_truncated.append(obj.find("truncated").text == "1")
+        is_difficult.append(obj.find("difficult").text == "1")
         bndbox = obj.find("bndbox")
         xmax.append(float(bndbox.find("xmax").text) / width)
         xmin.append(float(bndbox.find("xmin").text) / width)

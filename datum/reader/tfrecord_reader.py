@@ -16,7 +16,7 @@ import copy
 import json
 import os
 from functools import partial
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Optional, Union
 
 import numpy as np
 import tensorflow as tf
@@ -30,7 +30,7 @@ from datum.utils.shard_utils import get_read_instructions
 from datum.utils.types_utils import DatasetType
 
 
-class Reader(object):
+class Reader:
   """Build a tf.data.Dataset object out of Instruction instance(s)."""
 
   def __init__(self, path: str, read_config: ConfigBase, buffer_size: Optional[int] = None):
@@ -48,9 +48,9 @@ class Reader(object):
 
   def read(
       self,
-      instructions: Union[ReadInstruction, List[ReadInstruction], Dict[str, ReadInstruction]],
+      instructions: Union[ReadInstruction, list[ReadInstruction], dict[str, ReadInstruction]],
       shuffle_files: bool,
-  ) -> Union[DatasetType, List[DatasetType], Dict[str, DatasetType]]:
+  ) -> Union[DatasetType, list[DatasetType], dict[str, DatasetType]]:
     """Returns tf.data.Dataset instance(s).
 
     Args:
@@ -77,8 +77,8 @@ class Reader(object):
 
   def read_files(
       self,
-      file_instructions: List[Dict],
-      num_examples_per_shard: List[int],
+      file_instructions: list[dict],
+      num_examples_per_shard: list[int],
       shuffle_files: bool,
   ) -> DatasetType:
     """Returns single tf.data.Dataset instance for the set of file instructions.
@@ -134,7 +134,7 @@ class Reader(object):
     ds = ds.with_options(self._read_config.options)
     return ds.map(self._parser.parse_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
-  def _get_dataset_from_filename(self, filename_skip_take: Dict[str, Union[str, int]], do_skip: bool,
+  def _get_dataset_from_filename(self, filename_skip_take: dict[str, Union[str, int]], do_skip: bool,
                                  do_take: bool) -> DatasetType:
     """Returns a tf.data.Dataset instance from given (filename, skip, take)."""
     filename, skip, take = (
@@ -155,7 +155,7 @@ class Reader(object):
     return ds
 
 
-def make_file_instructions(path: str, instruction: str) -> Tuple[List[int], List[Dict]]:
+def make_file_instructions(path: str, instruction: str) -> tuple[list[int], list[dict]]:
   """Returns instructions of the split dict.
 
   Args:
@@ -191,9 +191,9 @@ def make_file_instructions(path: str, instruction: str) -> Tuple[List[int], List
 
 
 def _make_file_instructions_from_absolutes(
-    split2shard_props: Dict,
+    split2shard_props: dict,
     absolute_instructions: ReadInstruction,
-) -> Tuple[List[int], List[Dict]]:
+) -> tuple[list[int], list[dict]]:
   """Returns the files instructions from the absolute instructions list.
 
   Args:
@@ -204,7 +204,7 @@ def _make_file_instructions_from_absolutes(
     a tuple containing a list of integer representing number of examples per shards and a list
       of read instructions dict.
   """
-  file_instructions: List[Dict] = []
+  file_instructions: list[dict] = []
   num_examples_per_shard = []
   for abs_instr in absolute_instructions:
     shard_filenames, shard_lengths = split2shard_props[abs_instr.splitname]

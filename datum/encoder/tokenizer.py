@@ -1,4 +1,3 @@
-# coding=utf-8
 # Copyright 2020 The OpenAGI Datum Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,10 +19,11 @@ import unicodedata
 from datum.utils.common_utils import add_metaclass
 
 # This set contains all letter and number characters.
-_ALPHANUMERIC_CHAR_SET = set(
-    chr(i) for i in range(sys.maxunicode)
-    if (unicodedata.category(chr(i)).startswith("L") or unicodedata.category(chr(i)).startswith("N")
-        ))
+_ALPHANUMERIC_CHAR_SET = {
+    chr(i)
+    for i in range(sys.maxunicode)
+    if (unicodedata.category(chr(i)).startswith("L") or unicodedata.category(chr(i)).startswith("N"))
+}
 
 
 @add_metaclass(abc.ABCMeta)
@@ -57,7 +57,7 @@ class InvertibleTokenizer(BaseTokenizer):
     for pos in range(1, len(text)):
       if is_alnum[pos] != is_alnum[pos - 1]:
         token = text[token_start:pos]
-        if token != u" " or token_start == 0:
+        if token != " " or token_start == 0:
           ret.append(token)
         token_start = pos
     final_token = text[token_start:]
@@ -76,6 +76,6 @@ class InvertibleTokenizer(BaseTokenizer):
     ret = []
     for i, token in enumerate(tokens):
       if i > 0 and token_is_alnum[i - 1] and token_is_alnum[i]:
-        ret.append(u" ")
+        ret.append(" ")
       ret.append(token)
     return "".join(ret)

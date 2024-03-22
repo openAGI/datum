@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Tuple
-
 import tensorflow as tf
 
 
-def is_binary_image(string: tf.Tensor) -> Tuple[bool, str]:
+def is_binary_image(string: tf.Tensor) -> tuple[bool, str]:
   """Determine image compression type using a binary string tensor/object.
 
   Args:

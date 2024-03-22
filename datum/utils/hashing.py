@@ -1,4 +1,3 @@
-# coding=utf-8
 # Copyright 2020 The OpenAGI Datum Authors.
 # Copyright 2020 The TensorFlow Datasets Authors.
 #
@@ -43,17 +42,16 @@ result in same order.
 import hashlib
 from typing import Union
 
-import six
 import tensorflow as tf
 
 
 def _to_bytes(data: Union[str, bytes]) -> bytes:
-  if not isinstance(data, (six.string_types, bytes)):
+  if not isinstance(data, ((str,), bytes)):
     data = str(data)
   return tf.compat.as_bytes(data)
 
 
-class Hasher(object):
+class Hasher:
   """Hasher: to initialize a md5 with salt."""
 
   def __init__(self, salt: str):

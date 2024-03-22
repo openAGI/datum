@@ -15,7 +15,7 @@
 import json
 import os
 from itertools import islice
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Optional
 
 import numpy as np
 import tensorflow as tf
@@ -50,11 +50,9 @@ class TFRecordWriter():
                path: str,
                split: str,
                total_examples: int,
-               sparse_features: Optional[List[str]] = None,
+               sparse_features: Optional[list[str]] = None,
                **gen_kwargs: Any):
-    """ path = /tmp/test/
-       split = train/val/test
-    """
+    """Path = /tmp/test/ split = train/val/test."""
     self.generator = generator
     self.serializer = serializer
     self.shuffler = Shuffler(os.path.dirname(path), split)
@@ -116,7 +114,7 @@ class TFRecordWriter():
     """Wirte tfrecord files to disk."""
     self.flush_records()
 
-  def flush_records(self) -> Tuple[Dict[str, Dict[str, int]], int]:
+  def flush_records(self) -> tuple[dict[str, dict[str, int]], int]:
     """Write tfrecord files to disk.
 
     Returns:
@@ -134,14 +132,16 @@ class TFRecordWriter():
     except DuplicatedKeysError as err:
       shard_utils.raise_error_for_duplicated_keys(err)
     shard_info = {
-        self.split: {spec.path.split("/")[-1]: int(spec.examples_number)
-                     for spec in shard_specs}
+        self.split: {
+            spec.path.split("/")[-1]: int(spec.examples_number)
+            for spec in shard_specs
+        }
     }
     self.save_shard_info(shard_info)
     logging.info(f"Done writing {self.path}. Shard lengths: {list(shard_info[self.split].values())}")
     return shard_info, self.shuffler.size
 
-  def save_shard_info(self, shard_info: Dict[str, Dict[str, int]]) -> None:
+  def save_shard_info(self, shard_info: dict[str, dict[str, int]]) -> None:
     """Save shard info to disk.
 
     Args:

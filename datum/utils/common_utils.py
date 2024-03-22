@@ -18,7 +18,7 @@ import copy
 import importlib.util as module_util
 import sys
 from itertools import chain
-from typing import Any, Callable, Dict, List, Optional, Tuple, no_type_check
+from typing import Any, Callable, Optional, no_type_check
 
 import numpy as np
 from tensorflow.python.util import tf_inspect
@@ -71,12 +71,12 @@ class AttrDict(dict):
   def __setattr__(self, name: str, value: Any) -> None:
     if hasattr(self.__class__, name):
       raise AttributeError("'Dict' object attribute "
-                           "'{0}' is read-only".format(name))
+                           "'{}' is read-only".format(name))
     else:
       self[name] = value
 
   def __setitem__(self, name: str, value: Any) -> None:
-    super(AttrDict, self).__setitem__(name, value)
+    super().__setitem__(name, value)
     try:
       p = object.__getattribute__(self, '__parent')
       key = object.__getattribute__(self, '__key')
@@ -140,7 +140,7 @@ class AttrDict(dict):
     return other
 
   def update(self, *args: Any, **kwargs: Any) -> None:
-    other: Dict[Any, Any] = {}
+    other: dict[Any, Any] = {}
     if args:
       if len(args) > 1:
         raise TypeError()
@@ -236,7 +236,7 @@ def zip_dict(*dicts):
     yield key, tuple(d[key] for d in dicts)
 
 
-def item_to_type_and_shape(item: ValueType) -> Tuple[str, List]:
+def item_to_type_and_shape(item: ValueType) -> tuple[str, list]:
   """Datum item to type and shape."""
   item = np.array(item)
 
@@ -254,7 +254,7 @@ def item_to_type_and_shape(item: ValueType) -> Tuple[str, List]:
     raise ValueError(f'Unsupported value: {item}.')
 
 
-def check_and_image_shape(item: ValueType, shape: List) -> List:
+def check_and_image_shape(item: ValueType, shape: list) -> list:
   """Check whether a string is image filename.
 
   Args:
@@ -285,7 +285,7 @@ def is_string(item: Any) -> bool:
   return False
 
 
-def datum_to_type_and_shape(datum: DatumType, sparse_features: Optional[List[str]] = None) -> Dict:
+def datum_to_type_and_shape(datum: DatumType, sparse_features: Optional[list[str]] = None) -> dict:
   """Get object type and shape from value."""
   if not isinstance(datum, dict):
     raise ValueError(f'Input type is not supported, datum: {datum}')
@@ -318,7 +318,7 @@ class memoized_property(property): # pylint: disable=invalid-name
 
 
 def deserialize_object(identifier: Any,
-                       module_objects: Dict,
+                       module_objects: dict,
                        printable_module_name: str = 'object') -> object:
   """Deserialize object using name.
 
