@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import abc
-from typing import Any, Dict
+from typing import Any
 
 import tensorflow as tf
 
@@ -126,7 +126,7 @@ class GraphEncoder(Encoder):
     return inputs
 
 
-def datum_name_to_encoder(datum: Dict, problem_type: str) -> Dict[str, Encoder]:
+def datum_name_to_encoder(datum: dict, problem_type: str) -> dict[str, Encoder]:
   """Automatically identify encoder based on data values and problem type.
 
   Args:

@@ -14,7 +14,7 @@
 
 import json
 import os
-from typing import Callable, Dict, List, Optional
+from typing import Callable, Optional
 
 import tensorflow as tf
 from absl import logging
@@ -60,8 +60,8 @@ class Dataset():
             deterministic: bool = False,
             use_tf_padding: bool = False,
             use_datum_padding: bool = False,
-            pre_batching_callback: Optional[Callable[[Dict], Dict]] = None,
-            post_batching_callback: Optional[Callable[[Dict], Dict]] = None) -> DatasetType:
+            pre_batching_callback: Optional[Callable[[dict], dict]] = None,
+            post_batching_callback: Optional[Callable[[dict], dict]] = None) -> DatasetType:
     """Read and process data from tfrecord files.
 
     Args:
@@ -142,9 +142,9 @@ class Dataset():
     return dataset
 
   @memoized_property
-  def padded_shapes(self) -> Dict[str, List]:
+  def padded_shapes(self) -> dict[str, list]:
     """Returns padded shapes from dataset metadata."""
-    with open(os.path.join(self._path, 'datum_to_type_and_shape_mapping.json'), 'r') as json_f:
+    with open(os.path.join(self._path, 'datum_to_type_and_shape_mapping.json')) as json_f:
       mapping = json.load(json_f)
     padded_shapes = {}
     for key, value in mapping.items():

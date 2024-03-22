@@ -1,4 +1,3 @@
-# coding=utf-8
 # Copyright 2020 The OpenAGI Datum Authors.
 # Copyright 2020 The TensorFlow Datasets Authors.
 #
@@ -18,12 +17,13 @@
 """Wrapper around tqdm."""
 
 import contextlib
-from typing import Any, Callable, Iterator, List, no_type_check
+from collections.abc import Iterator
+from typing import Any, Callable, no_type_check
 
 from tqdm import auto as tqdm_lib
 
 
-class EmptyTqdm(object):
+class EmptyTqdm:
   """Dummy tqdm which doesn't do anything."""
 
   def __init__(self, *args: Any, **kwargs: Any): # pylint: disable=unused-argument
@@ -108,9 +108,9 @@ def _async_tqdm(*args, **kwargs):
     print() # Avoid the next log to overlapp with the bar
 
 
-class _TqdmPbarAsync(object):
+class _TqdmPbarAsync:
   """Wrapper around Tqdm pbar which be shared between thread."""
-  _tqdm_bars: List[tqdm_lib.tqdm] = []
+  _tqdm_bars: list[tqdm_lib.tqdm] = []
 
   def __init__(self, pbar: tqdm_lib.tqdm):
     self._lock = tqdm_lib.tqdm.get_lock()

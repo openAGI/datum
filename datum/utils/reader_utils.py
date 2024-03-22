@@ -14,7 +14,7 @@
 import dataclasses
 import math
 import re
-from typing import Dict, List, Optional
+from typing import Optional
 
 _SUB_SPEC_RE = re.compile(
     r'''
@@ -34,7 +34,7 @@ _ADDITION_SEP_RE = re.compile(r'\s*\+\s*')
 
 
 @dataclasses.dataclass
-class _AbsoluteInstruction(object):
+class _AbsoluteInstruction:
   """A machine friendly slice: defined absolute positive boundaries."""
   splitname: str = 'test'
   from_: Optional[int] = None
@@ -42,7 +42,7 @@ class _AbsoluteInstruction(object):
 
 
 @dataclasses.dataclass
-class _RelativeInstruction(object):
+class _RelativeInstruction:
   """Represents a single parsed slicing instruction, can use % and negatives."""
   splitname: str = 'test'
   from_: Optional[int] = None
@@ -62,7 +62,7 @@ def _pct_to_abs_closest(boundary: int, num_examples: int) -> int:
   return int(round(boundary * num_examples / 100.))
 
 
-def _rel_to_abs_instr(rel_instr: _RelativeInstruction, name2len: Dict[str,
+def _rel_to_abs_instr(rel_instr: _RelativeInstruction, name2len: dict[str,
                                                                       int]) -> _AbsoluteInstruction:
   """Returns _AbsoluteInstruction instance for given RelativeInstruction.
 
@@ -97,18 +97,18 @@ def _rel_to_abs_instr(rel_instr: _RelativeInstruction, name2len: Dict[str,
   return _AbsoluteInstruction(split, from_, to)
 
 
-class ReadInstruction(object):
+class ReadInstruction:
   """Reading instruction for a dataset.
 
   Examples of usage: ```
   """
 
-  def _init(self, relative_instructions: List[_RelativeInstruction]) -> None:
+  def _init(self, relative_instructions: list[_RelativeInstruction]) -> None:
     self._relative_instructions = relative_instructions
 
   @classmethod
   def _read_instruction_from_relative_instructions(
-      cls, relative_instructions: List[_RelativeInstruction]) -> List[_RelativeInstruction]:
+      cls, relative_instructions: list[_RelativeInstruction]) -> list[_RelativeInstruction]:
     """Returns ReadInstruction obj initialized with relative_instructions."""
     # Use __new__ to bypass __init__ used by public API and not conveniant here.
     result = cls.__new__(cls)
@@ -186,7 +186,7 @@ class ReadInstruction(object):
   def __str__(self) -> str:
     return 'ReadInstruction(%s)' % self._relative_instructions
 
-  def to_absolute(self, name2len: Dict[str, int]) -> List[_AbsoluteInstruction]:
+  def to_absolute(self, name2len: dict[str, int]) -> list[_AbsoluteInstruction]:
     """Translate instruction into a list of absolute instructions.
 
     Those absolute instructions are then to be added together.

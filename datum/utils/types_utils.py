@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Callable, Dict, Generator, List, Union
+from collections.abc import Generator
+from typing import Callable, Union
 
 import numpy as np
 import tensorflow as tf
 
-ValueType = Union[int, float, str, bytes, List[Union[int, float, str]]]
-DatumType = Dict[str, Union[str, int, bytes, float, List[int], List[float], List[str], np.ndarray]]
-GeneratorReturnType = Generator[Union[Union[str, int], Dict], None, None]
+ValueType = Union[int, float, str, bytes, list[Union[int, float, str]]]
+DatumType = dict[str, Union[str, int, bytes, float, list[int], list[float], list[str], np.ndarray]]
+GeneratorReturnType = Generator[Union[Union[str, int], dict], None, None]
 DatasetType = tf.data.Dataset
-FileInstructionDict = Dict[str, Union[str, int]]
-ParseFn = Callable[[tf.train.Example], Dict[str, tf.Tensor]]
+FileInstructionDict = dict[str, Union[str, int]]
+ParseFn = Callable[[tf.train.Example], dict[str, tf.Tensor]]

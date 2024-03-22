@@ -15,7 +15,7 @@
 import json
 import os
 from functools import reduce
-from typing import Any, Dict, List
+from typing import Any
 
 import tensorflow as tf
 
@@ -40,7 +40,7 @@ class DatumParser():
         'string': tf.string,
     }
 
-  def load_datum_type_shape_mapping(self, path: str) -> Dict[str, Dict[str, Any]]:
+  def load_datum_type_shape_mapping(self, path: str) -> dict[str, dict[str, Any]]:
     """Load datum type and shape mapping. Feature shae and types are required to deserialize tfrecord
     serialized binary string data.
 
@@ -55,7 +55,7 @@ class DatumParser():
       return json.load(json_f)
 
   @memoized_property
-  def names_to_feature_type(self) -> Dict[str, tf.train.Feature]:
+  def names_to_feature_type(self) -> dict[str, tf.train.Feature]:
     """Feature name to feature type mapping, passed as input to example parsing fn.
 
     Returns:
@@ -73,7 +73,7 @@ class DatumParser():
         mapping[key] = tf.io.VarLenFeature(self.pytype_to_tftype[value['type']])
     return mapping
 
-  def wrap_shape(self, shape: List[int]) -> List[int]:
+  def wrap_shape(self, shape: list[int]) -> list[int]:
     """Convert a list of shape to a single element by multiplying all the entries.
 
     Args:
@@ -86,7 +86,7 @@ class DatumParser():
       return reduce(lambda x, y: x * y, shape) # type: ignore
     return shape
 
-  def parse_fn(self, example: tf.train.Example) -> Dict[str, tf.Tensor]:
+  def parse_fn(self, example: tf.train.Example) -> dict[str, tf.Tensor]:
     """Parse a single example from serialized binary string.
 
     Args:
@@ -98,7 +98,7 @@ class DatumParser():
     parsed_example = tf.io.parse_single_example(example, self.names_to_feature_type)
     return self.decode_example(parsed_example)
 
-  def decode_example(self, parsed_example: Dict[str, tf.Tensor]) -> Dict[str, tf.Tensor]:
+  def decode_example(self, parsed_example: dict[str, tf.Tensor]) -> dict[str, tf.Tensor]:
     """Decode deserialized example. Used to retrieve feature original shape and value.
 
     Args:

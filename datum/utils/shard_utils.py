@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import collections
-from typing import Dict, Iterator, List, Sequence, Union
+from collections.abc import Iterator, Sequence
+from typing import Union
 
 import tensorflow as tf
 from absl import logging
@@ -48,7 +49,7 @@ def raise_error_for_duplicated_keys(err: Exception) -> None:
 
 
 def get_shard_specs(num_examples: int, total_size: int, bucket_lengths: Sequence[int],
-                    path: str) -> List[_ShardSpec]:
+                    path: str) -> list[_ShardSpec]:
   """Returns list of _ShardSpec instances, corresponding to shards to write.
 
   Args:
@@ -82,7 +83,7 @@ def get_shard_specs(num_examples: int, total_size: int, bucket_lengths: Sequence
   return shard_specs
 
 
-def _get_shard_boundaries(num_examples: int, number_of_shards: int) -> List[int]:
+def _get_shard_boundaries(num_examples: int, number_of_shards: int) -> list[int]:
   """Shard boundaries based on number of number of shards to generate."""
   if num_examples == 0:
     raise AssertionError("No examples were yielded.")
@@ -136,7 +137,7 @@ def get_read_instructions(from_: int,
                           to: int,
                           filenames: Sequence[Union[str, int]],
                           shard_lengths: Sequence[int],
-                          shardref_name: str = "filename") -> List[Dict]:
+                          shardref_name: str = "filename") -> list[dict]:
   """Returns a list of files (+skip/take) to read [from_:to] items from shards.
 
   Args:

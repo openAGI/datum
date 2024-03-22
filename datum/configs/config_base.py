@@ -19,7 +19,7 @@ from __future__ import annotations # type: ignore
 from typing import Any, Callable
 
 
-class ConfigBase(object):
+class ConfigBase:
   """Base class for representing a set of tf.data config.
 
   Attributes:
@@ -48,7 +48,7 @@ class ConfigBase(object):
     if hasattr(self, name):
       object.__setattr__(self, name, value)
     else:
-      raise AttributeError("Cannot set the property %s on %s." % (name, type(self).__name__))
+      raise AttributeError("Cannot set the property {} on {}.".format(name, type(self).__name__))
 
   def merge(self, configs: ConfigBase) -> ConfigBase:
     return merge_configs(self, configs)
@@ -89,6 +89,7 @@ def create_config(name: str,
 
 def merge_configs(*configs_list: ConfigBase) -> ConfigBase:
   """Merges the given configs, returning the result as a new configs object.
+
   The input arguments are expected to have a matching type that derives from
   `ConfigBase` (and thus each represent a set of configs). The method outputs
   an object of the same type created by merging the sets of configs represented
@@ -112,7 +113,7 @@ def merge_configs(*configs_list: ConfigBase) -> ConfigBase:
 
   for configs in configs_list:
     if not isinstance(configs, result_type):
-      raise TypeError("Incompatible configs type: %r vs %r" % (type(configs), result_type))
+      raise TypeError("Incompatible configs type: {!r} vs {!r}".format(type(configs), result_type))
 
   if not isinstance(configs_list[0], ConfigBase):
     raise TypeError("The inputs should inherit from `ConfigBase`")
