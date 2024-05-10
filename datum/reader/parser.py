@@ -112,9 +112,9 @@ class DatumParser():
       dtype = self.pytype_to_tftype[self.datum_to_type_shape[key]['type']]
       if dtype == tf.string:
         if len(self.datum_to_type_shape[key]['shape']) == 2:
-          deserialized_outputs[key] = tf.io.decode_jpeg(value, 1)
+          deserialized_outputs[key] = tf.io.decode_jpeg(value, 1, dct_method="INTEGER_ACCURATE")
         elif len(self.datum_to_type_shape[key]['shape']) == 3:
-          deserialized_outputs[key] = tf.io.decode_jpeg(value, 3)
+          deserialized_outputs[key] = tf.io.decode_jpeg(value, 3, dct_method="INTEGER_ACCURATE")
         elif self.datum_to_type_shape[key]['dense']:
           deserialized_outputs[key] = value
         else:
