@@ -118,7 +118,7 @@ class TestSegDataset(absltest.TestCase):
     ds = self._dataset.train_fn('train', False)
     batch = next(iter(ds))
     self.assertEqual(batch['image'].shape, [1, 281, 500, 3])
-    self.assertEqual(batch['label'].shape, [1, 281, 500, 3])
+    self.assertEqual(batch['label'].shape, [1, 281, 500, 1])
 
 
 class TestTextJsonDataset(absltest.TestCase):

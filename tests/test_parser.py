@@ -136,4 +136,4 @@ class TestSegDatumParser(absltest.TestCase):
     batch = next(iter(dataset))
     self.assertEqual(list(batch.keys()), ['image', 'label'])
     self.assertEqual(batch['image'].shape, [1, 366, 500, 3])
-    self.assertEqual(batch['label'].shape, [1, 366, 500, 3])
+    self.assertEqual(batch['label'].shape, [1, 366, 500, 1])
