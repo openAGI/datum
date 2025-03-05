@@ -1,6 +1,6 @@
 # core lib dep
 tensorflow <2.19
-opencv-python==4.5.*
+pillow >=9.2.0
 absl-py>=0.10
 tqdm>=4.39.0
 wrapt>=1.14.1

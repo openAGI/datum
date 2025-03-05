@@ -266,10 +266,10 @@ def check_and_image_shape(item: ValueType, shape: list) -> list:
   if len(item.shape) > 0:
     item = str(item[0])
   if item.endswith(('.jpg', '.jpeg', '.png')):
-    import cv2
-    im = cv2.imread(item)
+    from PIL import Image
+    im = Image.open(item)
     if im is not None:
-      return list(im.shape)
+      return list(np.asarray(im).shape)
   return shape
 
 
